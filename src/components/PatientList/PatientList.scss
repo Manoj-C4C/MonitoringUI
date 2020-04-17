@@ -7,6 +7,15 @@
 .yellow-color {
     color: #FF9300;
 }
+.green-bg-color {
+    background-color: #00A30B;
+}
+.red-bg-color {
+    background-color: #FF0000;
+}
+.yellow-bg-color {
+    background-color: #FF9300;
+}
 
 .header-title {
     font-weight: 600;
@@ -58,11 +67,12 @@
     border: 1px solid red;
     width: 84px;
     color: red;
-    top: -12px;
+    top: -10px;
     left: -10px;
     display: flex;
     height: 22px;
     font-weight: 600;
+    background-color: #fff;
 }
 
 .alert_icon {
@@ -78,7 +88,7 @@
 .patients_card_view_container {
     margin-top: 15px;
 
-    .card-view{
+    .doctor-card-view{
         display: inline-block;
         width: calc(32% - 3px);
         background-color: white;
@@ -139,6 +149,34 @@
         .time-updated {
             font-size: 12px;
             margin-bottom: -10px;
+        }
+    }
+
+    .operator-card-view{
+        display: inline-block;
+        margin: 0 6px 6px 0;
+        color: #fff;
+        border-radius: 2px;
+        position: relative;
+        text-align: center;
+        width: 11%;
+
+        .id-style {
+            line-height: 30px;
+            font-size: 14px;
+        }
+        .sos-alert {
+            position: absolute;
+            border: 2px solid #FF0000;
+            width: 22px;
+            height: 22px;
+            top: -4px;
+            left: -4px;
+            background-color: #fff;
+        }
+        .sos-icon {
+            fill: #FF0000;
+            margin-top: 1px;
         }
     }
 }

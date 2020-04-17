@@ -8,8 +8,17 @@ import {
 import { Location16, Warning16, Filter32 } from '@carbon/icons-react';
 
 class PatientList extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      userType: 2
+    }
+  }
+
   render() {
 
+    const userType = this.state.userType;
     const patientsList = [
       {
         id: 12344,
@@ -82,6 +91,54 @@ class PatientList extends Component {
         last_updated_by: {name: 'Mike', time: '12th Jan 2020'},
         isSos: false,
         covid19Status: 3
+      },
+      {
+        id: 12350,
+        name: 'John Doe 6',
+        gender: 'Male',
+        age: 37,
+        travel_history: 'China',
+        test_result: 'Positive',
+        address: '497 Evergreen Rd, Roseville, CA 95673',
+        last_updated_by: {name: 'Mike', time: '12th Jan 2020'},
+        isSos: true,
+        covid19Status: 3
+      },
+      {
+        id: 12351,
+        name: 'John Doe 6',
+        gender: 'Male',
+        age: 37,
+        travel_history: 'China',
+        test_result: 'Positive',
+        address: '497 Evergreen Rd, Roseville, CA 95673',
+        last_updated_by: {name: 'Mike', time: '12th Jan 2020'},
+        isSos: false,
+        covid19Status: 3
+      },
+      {
+        id: 12352,
+        name: 'John Doe 6',
+        gender: 'Male',
+        age: 37,
+        travel_history: 'China',
+        test_result: 'Positive',
+        address: '497 Evergreen Rd, Roseville, CA 95673',
+        last_updated_by: {name: 'Mike', time: '12th Jan 2020'},
+        isSos: true,
+        covid19Status: 3
+      },
+      {
+        id: 12353,
+        name: 'John Doe 6',
+        gender: 'Male',
+        age: 37,
+        travel_history: 'China',
+        test_result: 'Positive',
+        address: '497 Evergreen Rd, Roseville, CA 95673',
+        last_updated_by: {name: 'Mike', time: '12th Jan 2020'},
+        isSos: false,
+        covid19Status: 3
       }
     ];
 
@@ -126,44 +183,60 @@ class PatientList extends Component {
         <div className="bx--row row-margin">
           <p className="header-title">Showing 6 COVID-19 +VE patients</p>
         </div>      
-        <div className="patients_card_view_container">     
-          {patientsList.map((value, index) => {
-            return(
-              <Tile className="card-view" key={index}>
-                {value.isSos ? 
-                  <div className="alert_style">
-                    <Warning16 className="alert_icon" />
-                    <span className="alert_label">SOS ALERT</span>
-                  </div> : null 
-                }
-                <div className="name_risk_style">
-                  <span className={`name_title ${value.covid19Status === 1 ? 'red-color' : (value.covid19Status === 2 ? 'yellow-color' : 'green-color')}`}>{value.name}</span>
+        <div className="patients_card_view_container">    
+          {userType === 1 ? 
+            patientsList.map((value, index) => {
+              return(
+                <Tile className="doctor-card-view" key={index}>
+                  {value.isSos ? 
+                    <div className="alert_style">
+                      <Warning16 className="alert_icon" />
+                      <span className="alert_label">SOS ALERT</span>
+                    </div> : null 
+                  }
+                  <div className="name_risk_style">
+                    <span className={`name_title ${value.covid19Status === 1 ? 'red-color' : (value.covid19Status === 2 ? 'yellow-color' : 'green-color')}`}>{value.name}</span>
+                  </div>
+                  <div>
+                    <span className="patient-id">ID: {value.id}</span>
+                    <div className="title_strip">Home Quarantine</div>
+                  </div>
+                  <div className="patient_box">
+                    <p className="label_title">GENDER</p>
+                    <p className="label_value">{value.gender}</p>
+                  </div>
+                  <div className="patient_box">
+                    <p className="label_title">AGE</p>
+                    <p className="label_value">{value.age} years</p>
+                  </div>
+                  <div className="patient_box">
+                    <p className="label_title">TRAVEL HISTORY</p>
+                    <p className="label_value">{value.travel_history}</p>
+                  </div>
+                  <div className="patient_box">
+                    <p className="label_title">TESTED FOR COVID-19</p>
+                    <p className="label_value">{value.test_result}</p>
+                  </div>
+                  <p><Location16 /> <span className="location-style">{value.address}</span></p>
+                  <p className="time-updated">Last updated by {value.last_updated_by.name}, {value.last_updated_by.time}</p>
+                </Tile>
+              )
+            }) : 
+            patientsList.map((value, index) => {
+              return(
+                <div key={index}
+                className={`operator-card-view ${value.covid19Status === 1 ? 'red-bg-color' : (value.covid19Status === 2 ? 'yellow-bg-color' : 'green-bg-color')}`}
+                >
+                  {value.isSos ? 
+                    <div className="sos-alert">
+                      <Warning16 className="sos-icon" />
+                    </div> : null 
+                  }
+                  <span className="id-style">{value.id}</span>
                 </div>
-                <div>
-                  <span className="patient-id">ID: {value.id}</span>
-                  <div className="title_strip">Home Quarantine</div>
-                </div>
-                <div className="patient_box">
-                  <p className="label_title">GENDER</p>
-                  <p className="label_value">{value.gender}</p>
-                </div>
-                <div className="patient_box">
-                  <p className="label_title">AGE</p>
-                  <p className="label_value">{value.age} years</p>
-                </div>
-                <div className="patient_box">
-                  <p className="label_title">TRAVEL HISTORY</p>
-                  <p className="label_value">{value.travel_history}</p>
-                </div>
-                <div className="patient_box">
-                  <p className="label_title">TESTED FOR COVID-19</p>
-                  <p className="label_value">{value.test_result}</p>
-                </div>
-                <p><Location16 /> <span className="location-style">{value.address}</span></p>
-                <p className="time-updated">Last updated by {value.last_updated_by.name}, {value.last_updated_by.time}</p>
-              </Tile>
-            )
-          })}
+              )
+            })
+          }
         </div>
       </React.Fragment>
     );
