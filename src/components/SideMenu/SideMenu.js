@@ -40,12 +40,15 @@ class SideMenu extends Component {
                         <p className="text-color">Health Monitoring Dashboard</p>
                     </SideNavLink>
                     <SideNavLink renderIcon={Events32} onClick={() => { this.switchSideTab('') }} className={`list-style ${sideTabType === '' ? 'list-style_selected' : ''}`}>
+                        {sideTabType === '' ? <div className="tab-container"></div> : ''}
                         <p className="text-color">Patients</p>
                     </SideNavLink>
                     <SideNavLink renderIcon={HelpFilled32} onClick={() => { this.switchSideTab('help') }} className={`list-style ${sideTabType === 'help' ? 'list-style_selected' : ''}`}>
+                        {sideTabType === 'help' ? <div className="tab-container"></div> : ''}
                         <p className="text-color">Help Center</p>
                     </SideNavLink>
                     <SideNavLink renderIcon={Settings32} onClick={() => { this.switchSideTab('settings') }} className={`list-style ${sideTabType === 'settings' ? 'list-style_selected' : ''}`}>
+                        {sideTabType === 'settings' ? <div className="tab-container"></div> : ''}
                         <p className="text-color">Settings</p>
                     </SideNavLink>
                 </SideNavItems>

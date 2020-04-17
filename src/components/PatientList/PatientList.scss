@@ -1,7 +1,18 @@
+.green-color {
+    color: #00A30B;
+}
+.red-color {
+    color: #FF0000;
+}
+.yellow-color {
+    color: #FF9300;
+}
+
 .header-title {
     font-weight: 600;
-    font-size: 17px;
-    color: #696969;
+    font-size: 14px;
+    color: #333333;
+    margin: 9px 0 9px;
 }
 
 .row-margin {
@@ -45,7 +56,7 @@
 .alert_style {
     position: absolute;
     border: 1px solid red;
-    width: 90px;
+    width: 84px;
     color: red;
     top: -12px;
     left: -10px;
@@ -60,7 +71,7 @@
 }
 
 .alert_label {
-    font-size: 10px;
+    font-size: 9px;
     margin: 6px 0 0 6px;
 }
 
@@ -78,44 +89,56 @@
         position: relative;
 
         .name_title{
-            color: #000;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 17px;
         }
         .patient_box{
             display: inline-block;
             width: 48%;
-            padding: 0 0 20px;
             box-sizing: border-box;
             vertical-align: text-top;
-            min-height: 60px;
+            min-height: 50px;
+        }
+        .label_title {
+            font-size: 11px;
         }
         .label_value{
             word-wrap: break-word;
             font-weight: 600;
+            font-size: 13px;
+            line-height: 15px;
+            color: #333333;
+        }
+        .location-style {
+            font-size: 12px;
+            color: #333333;
         }
         .text-right {
             float: right;
         }
-        .addr_id {
-            font-size: 16px;
-            height: 25px;
-            margin-top: 10px;
-        }
         .title_strip {
             background-color: #DCDCDC;
-            width: 80px;
-            height: 25px;
-            color: red;
+            min-width: 90px;
+            height: 21px;
+            color: gray;
             text-align: center;
-            font-weight: 600;
-            line-height: 23px;
+            line-height: 21px;
             float: right;
+            font-size: 10px;
+        }
+        .patient-id {
+            font-size: 13px;
+            line-height: 30px;
+            font-weight: 600;
         }
         .name_risk_style {
             display: inline-block;
             box-sizing: border-box;
             width: 100%;
+        }
+        .time-updated {
+            font-size: 12px;
+            margin-bottom: -10px;
         }
     }
 }

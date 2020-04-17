@@ -14,68 +14,74 @@ class PatientList extends Component {
       {
         id: 12344,
         name: 'John Doe test 1',
-        country: 'San Francisco, CA',
         gender: 'Male',
         age: 37,
         travel_history: 'China',
         test_result: 'Positive',
-        address: 'Villa 28',
-        last_updated_by: {name: 'Mike', time: '12th Jan 2020'}
+        address: '497 Evergreen Rd, Roseville, CA 95673',
+        last_updated_by: {name: 'Mike', time: '12th Jan 2020'},
+        isSos: false,
+        covid19Status: 2
       },
       {
         id: 12345,
         name: 'John Doe 2',
-        country: 'India',
         gender: 'Male',
         age: 37,
         travel_history: 'China',
         test_result: 'Positive',
-        address: 'Villa 28',
-        last_updated_by: {name: 'Mike', time: '12th Jan 2020'}
+        address: '497 Evergreen Rd, Roseville, CA 95673',
+        last_updated_by: {name: 'Mike', time: '12th Jan 2020'},
+        isSos: true,
+        covid19Status: 3
       },
       {
         id: 12346,
         name: 'John Doe 3',
-        country: 'India',
         gender: 'Male',
         age: 37,
         travel_history: 'China',
         test_result: 'Positive',
-        address: 'Villa 28',
-        last_updated_by: {name: 'Mike', time: '12th Jan 2020'}
+        address: '497 Evergreen Rd, Roseville, CA 95673',
+        last_updated_by: {name: 'Mike', time: '12th Jan 2020'},
+        isSos: false,
+        covid19Status: 1
       },
       {
         id: 12347,
         name: 'John Doe 4',
-        country: 'India',
         gender: 'Male',
         age: 37,
         travel_history: 'China',
         test_result: 'Positive',
-        address: 'Villa 28',
-        last_updated_by: {name: 'Mike', time: '12th Jan 2020'}
+        address: '497 Evergreen Rd, Roseville, CA 95673',
+        last_updated_by: {name: 'Mike', time: '12th Jan 2020'},
+        isSos: true,
+        covid19Status: 1
       },
       {
         id: 12348,
         name: 'John Doe 5',
-        country: 'India',
         gender: 'Male',
         age: 37,
         travel_history: 'China',
         test_result: 'Positive',
-        address: 'Villa 28',
-        last_updated_by: {name: 'Mike', time: '12th Jan 2020'}
+        address: '497 Evergreen Rd, Roseville, CA 95673',
+        last_updated_by: {name: 'Mike', time: '12th Jan 2020'},
+        isSos: false,
+        covid19Status: 2
       },
       {
         id: 12349,
         name: 'John Doe 6',
-        country: 'India',
         gender: 'Male',
         age: 37,
         travel_history: 'China',
         test_result: 'Positive',
-        address: 'Villa 28',
-        last_updated_by: {name: 'Mike', time: '12th Jan 2020'}
+        address: '497 Evergreen Rd, Roseville, CA 95673',
+        last_updated_by: {name: 'Mike', time: '12th Jan 2020'},
+        isSos: false,
+        covid19Status: 3
       }
     ];
 
@@ -124,36 +130,37 @@ class PatientList extends Component {
           {patientsList.map((value, index) => {
             return(
               <Tile className="card-view" key={index}>
-                <div className="alert_style">
-                  <Warning16 className="alert_icon" />
-                  <span className="alert_label">SOS ALERT</span>
-                </div>
+                {value.isSos ? 
+                  <div className="alert_style">
+                    <Warning16 className="alert_icon" />
+                    <span className="alert_label">SOS ALERT</span>
+                  </div> : null 
+                }
                 <div className="name_risk_style">
-                  <span className="name_title">{value.name}</span>
-                  <div className="title_strip">At Risk</div>
+                  <span className={`name_title ${value.covid19Status === 1 ? 'red-color' : (value.covid19Status === 2 ? 'yellow-color' : 'green-color')}`}>{value.name}</span>
                 </div>
-                <div className="addr_id">
-                  <span>{value.country}</span>
-                  <span className="text-right">ID: {value.id}</span>
+                <div>
+                  <span className="patient-id">ID: {value.id}</span>
+                  <div className="title_strip">Home Quarantine</div>
                 </div>
                 <div className="patient_box">
-                  <p>GENDER</p>
+                  <p className="label_title">GENDER</p>
                   <p className="label_value">{value.gender}</p>
                 </div>
                 <div className="patient_box">
-                  <p>AGE</p>
+                  <p className="label_title">AGE</p>
                   <p className="label_value">{value.age} years</p>
                 </div>
                 <div className="patient_box">
-                  <p>TRAVEL HISTORY</p>
+                  <p className="label_title">TRAVEL HISTORY</p>
                   <p className="label_value">{value.travel_history}</p>
                 </div>
                 <div className="patient_box">
-                  <p>TESTED FOR COVID-19</p>
+                  <p className="label_title">TESTED FOR COVID-19</p>
                   <p className="label_value">{value.test_result}</p>
                 </div>
-                <p><Location16 /> <span className="label_value">{value.address}</span></p>
-                <p>Last updated by {value.last_updated_by.name}, {value.last_updated_by.time}</p>
+                <p><Location16 /> <span className="location-style">{value.address}</span></p>
+                <p className="time-updated">Last updated by {value.last_updated_by.name}, {value.last_updated_by.time}</p>
               </Tile>
             )
           })}

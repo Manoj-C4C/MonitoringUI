@@ -19,6 +19,7 @@
         height: 40px;
         margin: 10px 0 0 0;
         background-color: #333333;
+        position: relative;
         cursor: pointer;
 
         svg {
@@ -26,6 +27,14 @@
         }
         .text-color {
             color: #fff;
+        }
+        .tab-container {
+            position: absolute;
+            background-color: #fff;
+            width: 8px;
+            height: -webkit-fill-available;
+            left: 0;
+            top: 0;
         }
     }
 

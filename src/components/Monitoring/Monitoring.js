@@ -20,17 +20,17 @@ class Monitoring extends Component {
         <SideMenu history={this.props.history} />
         <Content>
           <Tabs>
-            <Tab id="tab-1" label="COVID-19 +VE" className="tab-list">
+            <Tab id="tab-1" label="All Patients" className="tab-list">
               <div className="some-content">
                 <PatientList />
               </div>
             </Tab>
-            <Tab id="tab-2" label="COVID-19 Possible">
+            <Tab id="tab-2" label="COVID-19 +VE" className="tab-list">
               <div className="some-content">
                 <PatientList />
               </div>
             </Tab>
-            <Tab id="tab-3" label="All Patients">
+            <Tab id="tab-3" label="COVID-19 Possible" className="tab-list">
               <div className="some-content">
                 <PatientList />
               </div>
