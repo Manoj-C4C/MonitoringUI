@@ -1,0 +1,49 @@
+.top-section {
+    height: 200px;
+    background-color: #707070;
+    text-align: center;
+    color: #fff;
+    padding-top: 70px;
+
+    .header {
+        font-size: 40px;
+        font-weight: bold;
+    }
+    .sub-header {
+        font-size: 35px;
+        margin-top: 20px;
+    }
+}
+
+.form-style {
+    width: 23%;
+    margin: 40px 0 0 495px;
+
+    label {
+        color: #707070;
+        font-size: 14px;
+        margin-top: 4px;
+    }
+
+    .text-field-style {
+        border: 1px solid #707070;
+        border-radius: 5px;
+    }
+
+    .forgot_pwd {
+        float: right;
+    }
+
+    .signin-btn {
+        width: 100%;
+        border-radius: 5px;
+        margin-top: 10px;
+        background-color: #707070;
+        padding: 0;
+
+        span {
+            margin: auto;
+            text-align: center;
+        }
+    }
+}

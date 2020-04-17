@@ -1,26 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import './index.scss';
+import Monitoring from './components/Monitoring/Monitoring';
+import Login from './components/Login/Login';
+import HelpCenter from './components/HelpCenter/HelpCenter';
+import Settings from './components/Settings/Settings';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  render() {
+    return (
+    <Router>
+      <Switch>
+        <Route exact path='/login' component={Login} />
+        <Route exact path='/' component={Monitoring} />
+        <Route exact path='/help' component={HelpCenter} />
+        <Route exact path='/settings' component={Settings} />
+      </Switch>
+    </Router>
+    );
+  }
 }
 
 export default App;

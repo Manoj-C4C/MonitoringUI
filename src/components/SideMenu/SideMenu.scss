@@ -1,0 +1,35 @@
+.sidenav-style {
+    background: #000;
+
+    .text-icon-style {
+        color: #fff;
+        font-size: 20px;
+    }
+
+    .side-header {
+        margin-bottom: 15px;
+        height: 40px;
+        
+        .text-color {
+            color: #fff;
+        }
+    }
+
+    .list-style {
+        height: 40px;
+        margin: 10px 0 0 0;
+        background-color: #333333;
+        cursor: pointer;
+
+        svg {
+            fill: #fff;
+        }
+        .text-color {
+            color: #fff;
+        }
+    }
+
+    .list-style_selected {
+        background-color: #4C99F5;
+    }
+}

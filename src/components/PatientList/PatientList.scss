@@ -1,0 +1,121 @@
+.header-title {
+    font-weight: 600;
+    font-size: 17px;
+    color: #696969;
+}
+
+.row-margin {
+    margin: 7px 0 0 0;
+}
+
+.search_box {
+    border: 0 solid #DCDCDC;
+    outline-style: auto;
+    width: 82%;
+}
+
+.filter-icon {
+    position: absolute;
+    right: 167px;
+    top: 99px;
+    z-index: 1;
+}
+
+.dropdown-search {
+    position: relative;
+    width: 132px;
+    margin-left: 8px;
+    border: 2px solid grey;
+
+    #dropdown-field-label-dropdown-search {
+        margin-left: 26px;
+    }
+}
+
+.vert-line {
+    width: 2px;
+    height: 39px;
+    background-color: gray;
+    position: absolute;
+    right: 163px;
+    top: 95px;
+    z-index: 1;
+}
+
+.alert_style {
+    position: absolute;
+    border: 1px solid red;
+    width: 90px;
+    color: red;
+    top: -12px;
+    left: -10px;
+    display: flex;
+    height: 22px;
+    font-weight: 600;
+}
+
+.alert_icon {
+    margin: 2px 0 0 4px;
+    fill: red;
+}
+
+.alert_label {
+    font-size: 10px;
+    margin: 6px 0 0 6px;
+}
+
+.patients_card_view_container {
+    margin-top: 15px;
+
+    .card-view{
+        display: inline-block;
+        width: calc(32% - 3px);
+        background-color: white;
+        margin: 0 12px 24px 0;
+        color: gray;
+        border: 2px solid #DCDCDC;
+        outline-style: auto;
+        position: relative;
+
+        .name_title{
+            color: #000;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .patient_box{
+            display: inline-block;
+            width: 48%;
+            padding: 0 0 20px;
+            box-sizing: border-box;
+            vertical-align: text-top;
+            min-height: 60px;
+        }
+        .label_value{
+            word-wrap: break-word;
+            font-weight: 600;
+        }
+        .text-right {
+            float: right;
+        }
+        .addr_id {
+            font-size: 16px;
+            height: 25px;
+            margin-top: 10px;
+        }
+        .title_strip {
+            background-color: #DCDCDC;
+            width: 80px;
+            height: 25px;
+            color: red;
+            text-align: center;
+            font-weight: 600;
+            line-height: 23px;
+            float: right;
+        }
+        .name_risk_style {
+            display: inline-block;
+            box-sizing: border-box;
+            width: 100%;
+        }
+    }
+}
