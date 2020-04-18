@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import './SideMenu.scss';
 import {
+    Header,
+    HeaderName,
     SideNav,
     SideNavItems,
     SideNavLink
 } from 'carbon-components-react/lib/components/UIShell';
-import { Events32, HelpFilled32, Settings32 } from '@carbon/icons-react';
+import { Events32, HelpFilled32, Settings32, Menu16 } from '@carbon/icons-react';
 
 class SideMenu extends Component {
 
@@ -28,31 +30,32 @@ class SideMenu extends Component {
         const sideTabType = this.state.sideTabType;
 
         return (
-            <SideNav
-                isFixedNav
-                expanded={true}
-                isChildOfHeader={false}
-                aria-label="Side navigation"
-                className="sidenav-style">
-                <SideNavItems>
-                    <SideNavLink className="side-header">
-                        <p className="text-color">COVID-19 </p>
-                        <p className="text-color">Health Monitoring Dashboard</p>
-                    </SideNavLink>
-                    <SideNavLink renderIcon={Events32} onClick={() => { this.switchSideTab('') }} className={`list-style ${sideTabType === '' ? 'list-style_selected' : ''}`}>
-                        {sideTabType === '' ? <div className="tab-container"></div> : ''}
-                        <p className="text-color">Patients</p>
-                    </SideNavLink>
-                    <SideNavLink renderIcon={HelpFilled32} onClick={() => { this.switchSideTab('help') }} className={`list-style ${sideTabType === 'help' ? 'list-style_selected' : ''}`}>
-                        {sideTabType === 'help' ? <div className="tab-container"></div> : ''}
-                        <p className="text-color">Help Center</p>
-                    </SideNavLink>
-                    <SideNavLink renderIcon={Settings32} onClick={() => { this.switchSideTab('settings') }} className={`list-style ${sideTabType === 'settings' ? 'list-style_selected' : ''}`}>
-                        {sideTabType === 'settings' ? <div className="tab-container"></div> : ''}
-                        <p className="text-color">Settings</p>
-                    </SideNavLink>
-                </SideNavItems>
-            </SideNav>
+            <React.Fragment>
+                <Header aria-label="IBM Platform Name" className="header-style">
+                    <Menu16 className="menu-icon" />
+                    <HeaderName href="#" prefix="" className="header-text">
+                        IBM COVID-19 Health Assistance
+                    </HeaderName>
+                </Header>
+                <SideNav
+                    isFixedNav
+                    expanded={true}
+                    isChildOfHeader={true}
+                    aria-label="Side navigation"
+                    className="sidenav-style">
+                    <SideNavItems>
+                        <SideNavLink renderIcon={Events32} onClick={() => { this.switchSideTab('') }} className={`list-style ${sideTabType === '' ? 'list-style_selected' : ''}`}>
+                            <p className="text-color">Patients Dashboard</p>
+                        </SideNavLink>
+                        <SideNavLink renderIcon={HelpFilled32} onClick={() => { this.switchSideTab('help') }} className={`list-style ${sideTabType === 'help' ? 'list-style_selected' : ''}`}>
+                            <p className="text-color">Help Center</p>
+                        </SideNavLink>
+                        <SideNavLink renderIcon={Settings32} onClick={() => { this.switchSideTab('settings') }} className={`list-style ${sideTabType === 'settings' ? 'list-style_selected' : ''}`}>
+                            <p className="text-color">Settings</p>
+                        </SideNavLink>
+                    </SideNavItems>
+                </SideNav>
+            </React.Fragment>
         );
     }
 }

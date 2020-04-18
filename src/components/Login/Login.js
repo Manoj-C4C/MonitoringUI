@@ -4,8 +4,13 @@ import {
   Form,
   TextInput,
   Button,
-  FormLabel
+  Checkbox,
+  Tile,
+  SwitcherDivider
 } from "carbon-components-react";
+import health_logo from '../../assets/images/health.svg';
+import { Content } from 'carbon-components-react/lib/components/UIShell';
+import { postapi } from '../../services/webservices';
 
 class Login extends Component {
 
@@ -15,6 +20,14 @@ class Login extends Component {
 
   signinBtn = () => {
     this.props.history.push('/');
+    /*const reqObj = {
+      "username":"480900901",
+      "password":"medicsdsdine"
+    };
+    return postapi('login', reqObj)
+    .then(responseJson => {
+        console.log('responseJson => ', responseJson.responseCode);
+    })*/
   }
 
   render() {
@@ -22,43 +35,54 @@ class Login extends Component {
     const TextInputProps = {
       className: 'text-field-style',
       id: 'username',
-      labelText: 'User Name',
-      placeholder: 'User Name',
+      labelText: 'Username'
     };
     
     const InvalidPasswordProps = {
       className: 'text-field-style',
       id: 'password',
-      labelText: 'Password !',
+      labelText: 'Password',
       invalid: false,
       invalidText:
         'Your password must be at least 6 characters as well as contain at least one uppercase, one lowercase, and one number.',
     };
 
+    const checkboxEvents = {
+      className: 'rememberme',
+      labelText: 'Remember me',
+    };
+
     return (
       <React.Fragment>
-        <div className="top-section">
-          <p className="header">COVID-19</p>
-          <p className="sub-header">Health Dashboard</p>
-        </div>
-        <div className="bottom-section">
-          <Form className="form-style">
-            <TextInput {...TextInputProps} />
+        <Content className="login-container">
+          <Tile className="form-container">
+            <div className="header-div">
+              <img src={health_logo} className="login-logo" alt="logo" />
+              <p className="header">COVID-19 Health Assistance</p>
+              <span className="sub-header">Please enter your details to monitor patient Health data</span>
+            </div>            
+            <SwitcherDivider className="divide-line" />
+            <Form className="form-style">
+              <TextInput {...TextInputProps} />
 
-            <TextInput
-              type="password"
-              required
-              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
-              {...InvalidPasswordProps}
-            />
+              <TextInput
+                type="password"
+                required
+                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
+                {...InvalidPasswordProps}
+              />
 
-            <FormLabel className="forgot_pwd">Forgot user name or password?</FormLabel>
+              <Checkbox {...checkboxEvents} id="checkbox-1" />
 
-            <Button type="submit" className="signin-btn" onClick={() => { this.signinBtn() }}>
-              <span>SIGN IN</span>
-            </Button>
-          </Form>
-        </div>
+              <div className="btn-div">
+                <Button type="submit" className="signin-btn" onClick={() => { this.signinBtn() }}>
+                  <span>Sign In</span>
+                </Button>
+              </div>
+            </Form>
+          </Tile>
+          <p className="forgot_pwd">Forgot username or password?</p>
+        </Content>
       </React.Fragment>
     );
   }

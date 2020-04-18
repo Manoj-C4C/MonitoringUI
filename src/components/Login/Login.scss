@@ -1,49 +1,68 @@
-.top-section {
-    height: 200px;
-    background-color: #707070;
-    text-align: center;
-    color: #fff;
-    padding-top: 70px;
-
-    .header {
-        font-size: 40px;
-        font-weight: bold;
-    }
-    .sub-header {
-        font-size: 35px;
-        margin-top: 20px;
-    }
-}
-
-.form-style {
-    width: 23%;
-    margin: 40px 0 0 495px;
-
-    label {
-        color: #707070;
-        font-size: 14px;
-        margin-top: 4px;
-    }
-
-    .text-field-style {
-        border: 1px solid #707070;
-        border-radius: 5px;
-    }
+.login-container {
+    background-color: #F4F4F4;
+    min-height: 610px;
 
     .forgot_pwd {
-        float: right;
+        text-align: center;
+        margin-top: 70px;
+        color: #007D79;
+        font-size: 13px;
     }
 
-    .signin-btn {
-        width: 100%;
-        border-radius: 5px;
-        margin-top: 10px;
-        background-color: #707070;
-        padding: 0;
+    .form-container {
+        height: auto;
+        width: 35%;
+        top: 70px;
+        left: 32.5%;
+        background-color: #fff;
 
-        span {
-            margin: auto;
+        .btn-div {
             text-align: center;
+        }
+
+        .header-div {
+            text-align: center;
+            margin-top: 10px;
+
+            .header {
+                color: #161616;
+                margin-top: 12px;
+                font-weight: 600;
+            }
+            .sub-header {
+                color: #393939;
+                line-height: 36px;
+            }
+        }
+        .divide-line {
+            background: #D3D3D3;
+            width: 90%;
+        }
+    } 
+
+    .form-style {
+        label {
+            color: #393939;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+    
+        .text-field-style {
+            background-color: #fff;
+            border: 1px solid #E2E2E2;
+        }
+    
+        .signin-btn {
+            width: 100%;
+            margin-top: 10px;
+            background-color: #007D79;
+            padding: 0;
+    
+            span {
+                margin: auto;
+                text-align: center;
+            }
         }
     }
 }
+

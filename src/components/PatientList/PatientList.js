@@ -2,23 +2,29 @@ import React, { Component } from 'react';
 import './PatientList.scss';
 import {
   Tile,
-  Search,
-  Dropdown
+  Dropdown,
+  Search
 } from "carbon-components-react";
-import { Location16, Warning16, Filter32 } from '@carbon/icons-react';
+import { Location16, Warning16, Search24, Information16 } from '@carbon/icons-react';
 
 class PatientList extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      userType: 2
+      userType: 1,
+      isSearchBoxOpen: false
     }
+  }
+
+  searchBtnClick = () => {
+    this.setState({isSearchBoxOpen: true});
   }
 
   render() {
 
     const userType = this.state.userType;
+    const isSearchBoxOpen = this.state.isSearchBoxOpen;
     const patientsList = [
       {
         id: 12344,
@@ -169,9 +175,11 @@ class PatientList extends Component {
     return (
       <React.Fragment>
         <div className="bx--row row-margin">
-          <Search id="search-patient" labelText="Search Patients" placeHolderText="Search Patients" className="search_box" />
-          <Filter32 className="filter-icon" />
-          <div className="vert-line"></div>
+          <p className="header-title">Showing 6 COVID-19 +VE patients</p>
+          { isSearchBoxOpen ? 
+            <Search id="search-patient" labelText="Search Patients" placeHolderText="What are you looking for today?" className="search_box" /> : 
+            <Search24 className="search_icon" onClick={() => { this.searchBtnClick() }} />
+          }
           <Dropdown
             items={items}
             id="dropdown-search"
@@ -179,10 +187,23 @@ class PatientList extends Component {
             className="dropdown-search"
             itemToString={item => (item ? item.text : '')}
           />
-        </div>
-        <div className="bx--row row-margin">
-          <p className="header-title">Showing 6 COVID-19 +VE patients</p>
         </div>      
+        {userType === 2 ? 
+          <div className="bx--row">
+            <div className="box-container">
+              <div className="green-bg-color identity-cont"></div>
+              <span>Normal</span>
+            </div>
+            <div className="box-container">
+              <div className="yellow-bg-color identity-cont"></div>
+              <span>COVID-19 Possible</span>
+            </div>
+            <div className="box-container">
+              <div className="red-bg-color identity-cont"></div>
+              <span>COVID-19 Positive</span>
+            </div>
+          </div> : null 
+        }
         <div className="patients_card_view_container">    
           {userType === 1 ? 
             patientsList.map((value, index) => {
@@ -190,35 +211,34 @@ class PatientList extends Component {
                 <Tile className="doctor-card-view" key={index}>
                   {value.isSos ? 
                     <div className="alert_style">
-                      <Warning16 className="alert_icon" />
-                      <span className="alert_label">SOS ALERT</span>
+                      <span className="alert_label">1 SOS</span>
                     </div> : null 
                   }
                   <div className="name_risk_style">
                     <span className={`name_title ${value.covid19Status === 1 ? 'red-color' : (value.covid19Status === 2 ? 'yellow-color' : 'green-color')}`}>{value.name}</span>
                   </div>
                   <div>
-                    <span className="patient-id">ID: {value.id}</span>
+                    <span className="patient-id">{value.id}</span>
                     <div className="title_strip">Home Quarantine</div>
                   </div>
                   <div className="patient_box">
-                    <p className="label_title">GENDER</p>
+                    <p className="label_title">Gender</p>
                     <p className="label_value">{value.gender}</p>
                   </div>
                   <div className="patient_box">
-                    <p className="label_title">AGE</p>
+                    <p className="label_title">Age</p>
                     <p className="label_value">{value.age} years</p>
                   </div>
                   <div className="patient_box">
-                    <p className="label_title">TRAVEL HISTORY</p>
+                    <p className="label_title">Travel History</p>
                     <p className="label_value">{value.travel_history}</p>
                   </div>
                   <div className="patient_box">
-                    <p className="label_title">TESTED FOR COVID-19</p>
+                    <p className="label_title">COVID-19 Status</p>
                     <p className="label_value">{value.test_result}</p>
                   </div>
                   <p><Location16 /> <span className="location-style">{value.address}</span></p>
-                  <p className="time-updated">Last updated by {value.last_updated_by.name}, {value.last_updated_by.time}</p>
+                  <p className="time-updated"><Information16 /> Last updated by {value.last_updated_by.name}, {value.last_updated_by.time}</p>
                 </Tile>
               )
             }) : 

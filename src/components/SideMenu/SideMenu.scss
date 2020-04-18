@@ -1,44 +1,43 @@
+.header-style {
+    background-color: #007D79;
+    .menu-icon {
+        fill: #fff;
+        margin-left: 10px;
+    }
+    .header-text {
+        font-size: 13px;
+        margin-left: -8px;
+    }
+}
+
 .sidenav-style {
-    background: #000;
+    background: #fff;
 
     .text-icon-style {
         color: #fff;
         font-size: 20px;
     }
 
-    .side-header {
-        margin-bottom: 15px;
-        height: 40px;
-        
-        .text-color {
-            color: #fff;
-        }
-    }
-
     .list-style {
         height: 40px;
-        margin: 10px 0 0 0;
-        background-color: #333333;
-        position: relative;
+        border-bottom: 0.1px solid black;
         cursor: pointer;
 
         svg {
-            fill: #fff;
+            fill: #000;
         }
         .text-color {
-            color: #fff;
-        }
-        .tab-container {
-            position: absolute;
-            background-color: #fff;
-            width: 8px;
-            height: -webkit-fill-available;
-            left: 0;
-            top: 0;
+            color: #000;
+            font-size: 14px;
         }
     }
 
     .list-style_selected {
-        background-color: #4C99F5;
+        svg {
+            fill: #007D79;
+        }
+        .text-color {
+            color: #007D79;
+        }
     }
 }

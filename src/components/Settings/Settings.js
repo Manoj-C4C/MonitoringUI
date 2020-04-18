@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import { Content } from 'carbon-components-react/lib/components/UIShell';
+import {
+  Tile
+} from 'carbon-components-react';
+import './Settings.scss';
 import SideMenu from '../SideMenu/SideMenu';
 
 class Settings extends Component {
@@ -7,8 +11,10 @@ class Settings extends Component {
     return (
       <React.Fragment>
         <SideMenu history={this.props.history} />
-        <Content>
-          <p>Settings page</p>
+        <Content className="content-block">
+          <Tile className="tile-block">
+            <p>Settings Page</p>
+          </Tile>
         </Content>
       </React.Fragment>
     );
