@@ -8,7 +8,7 @@ import {
 import { Content } from 'carbon-components-react/lib/components/UIShell';
 import SideMenu from '../SideMenu/SideMenu';
 import PatientList from '../PatientList/PatientList';
-
+import PatientDetails from '../PatientDetails/PatientDetails';
 class Monitoring extends Component {
 
   constructor(props) {
@@ -26,6 +26,7 @@ class Monitoring extends Component {
               <Tab id="tab-1" label="All Patients" className="tab-list">
                 <div className="some-content">
                   <PatientList />
+                  <PatientDetails/>
                 </div>
               </Tab>
               <Tab id="tab-2" label="COVID-19 +VE" className="tab-list">
