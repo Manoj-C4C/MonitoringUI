@@ -10,8 +10,7 @@ import {
   NotebookReference20
 } from "@carbon/icons-react";
 import {
-  TextArea,
-  Select
+  TextArea
 } from "carbon-components-react";
 import { LineChart } from "@carbon/charts-react";
 import { Link } from "react-router-dom";
@@ -186,7 +185,7 @@ class PatientDetails extends React.Component {
                 <div className="entry">
                   <div className="entrybox">
                     <ArrowRight20 />
-                    <TextArea className="textarea" />
+                    <TextArea className="textarea" labelText="" />
                   </div>
                 </div>
               </div>

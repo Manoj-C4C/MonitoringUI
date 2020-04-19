@@ -5,16 +5,20 @@ import {
     HeaderName,
     SideNav,
     SideNavItems,
-    SideNavLink
+    SideNavLink,
+    HeaderGlobalBar,
+    HeaderGlobalAction,
+    HeaderPanel
 } from 'carbon-components-react/lib/components/UIShell';
-import { Events32, HelpFilled32, Settings32, Menu16 } from '@carbon/icons-react';
+import { Events32, HelpFilled32, Settings32, Menu16, UserAvatar16, ChevronDown16 } from '@carbon/icons-react';
 
 class SideMenu extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            sideTabType: this.props.history.location.pathname.split('/')[1]
+            sideTabType: this.props.history.location.pathname.split('/')[1],
+            isPanelOpen: false
         }
     }
 
@@ -26,8 +30,12 @@ class SideMenu extends Component {
         }
     }
 
+    rightPanelClk = () => {
+        this.setState({ isPanelOpen: !this.state.isPanelOpen });
+    }
+
     render() {
-        const sideTabType = this.state.sideTabType;
+        const { sideTabType, isPanelOpen } = this.state;
 
         return (
             <React.Fragment>
@@ -36,6 +44,17 @@ class SideMenu extends Component {
                     <HeaderName href="#" prefix="" className="header-text">
                         IBM COVID-19 Health Assistance
                     </HeaderName>
+                    <HeaderGlobalBar>
+                        <HeaderGlobalAction className="header-right-user"
+                            aria-label="Search" onClick={() => { this.rightPanelClk() }}>
+                            <UserAvatar16 />
+                            <span className="header-right-text">Hi, Peter</span>
+                            <ChevronDown16 />
+                        </HeaderGlobalAction>
+                    </HeaderGlobalBar>
+                    {isPanelOpen ? 
+                        <HeaderPanel expanded aria-label="Header Panel" className="header-panel" />
+                    : null}
                 </Header>
                 <SideNav
                     isFixedNav

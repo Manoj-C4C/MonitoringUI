@@ -5,6 +5,7 @@ import {
 } from 'carbon-components-react';
 import './HelpCenter.scss';
 import SideMenu from '../SideMenu/SideMenu';
+import help_logo from '../../assets/images/datatable.png';
 
 class HelpCenter extends Component {
   render() {
@@ -13,7 +14,7 @@ class HelpCenter extends Component {
         <SideMenu history={this.props.history} />
         <Content className="content-block">
           <Tile className="tile-block">
-            <p>Help Center Page</p>
+            <img src={help_logo} className="help-logo" alt="logo" />
           </Tile>
         </Content>
       </React.Fragment>

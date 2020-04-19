@@ -8,30 +8,48 @@ import PatientList from "../PatientList/PatientList";
 class Monitoring extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      tabType: 'All',
+      sosCount: 0,
+      possibleCount: 0
+    }
+    this.handleSosCount = this.handleSosCount.bind(this);
+  }
+
+  tabClk(type) {
+    const tabChange = type === this.state.tabType ? false : true;
+      if(tabChange) {
+        this.setState({ tabType: type });
+      }
+  }
+
+  handleSosCount(data) {
+    this.setState({sosCount: data.sosCount, possibleCount: data.possibleCount});
   }
 
   render() {
+    const {tabType, sosCount, possibleCount} = this.state;
     return (
       <React.Fragment>
         <SideMenu history={this.props.history} />
         <Content className="content-block">
           <Tile className="tile-block">
             <p className="tabs-header">Patients Dashboard</p>
+            <div className="alert_container">
+              <span className="alert_label">{sosCount} SOS</span>
+            </div>
+            <div className="possible_pat">
+              <span className="possible_pat_label">{possibleCount}</span>
+            </div>
             <Tabs className="tabs-style">
-              <Tab id="tab-1" label="All Patients" className="tab-list">
-                <div className="some-content">
-                  <PatientList {...this.props} />
-                </div>
+              <Tab id="tab-1" label="All Patients" className="tab-list" onClick={() => { this.tabClk('All') }}>
+                {tabType === 'All' ? <PatientList {...this.props} userStatus={tabType} getSosCount={this.handleSosCount} /> : null }
               </Tab>
-              <Tab id="tab-2" label="COVID-19 +VE" className="tab-list">
-                <div className="some-content">
-                  <PatientList />
-                </div>
+              <Tab id="tab-2" label="COVID-19 Positive" className="tab-list" onClick={() => { this.tabClk('Positive') }}>
+                {tabType === 'Positive' ? <PatientList {...this.props} userStatus={tabType} getSosCount={this.handleSosCount} /> : null }
               </Tab>
-              <Tab id="tab-3" label="COVID-19 Possible" className="tab-list">
-                <div className="some-content">
-                  <PatientList />
-                </div>
+              <Tab id="tab-3" label="COVID-19 Possible" className="tab-list" onClick={() => { this.tabClk('Possible') }}>
+                {tabType === 'Possible' ? <PatientList {...this.props} userStatus={tabType} getSosCount={this.handleSosCount} /> : null }
               </Tab>
             </Tabs>
           </Tile>

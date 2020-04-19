@@ -8,6 +8,27 @@
         font-size: 13px;
         margin-left: -8px;
     }
+    .header-text:focus {
+        border: none;
+    }
+    .header-right-user:hover {
+        background-color: #007D79;
+    }
+    .header-right-user {
+        width: 15%;
+        color: #fff;
+        display: flex;
+        border: none;        
+
+        .header-right-text {
+            margin: 0 5px 0 5px;
+        }
+    }
+    .header-panel {
+        background-color: #007D79;
+        height: 15%;
+        width: 12%;
+    }
 }
 
 .sidenav-style {

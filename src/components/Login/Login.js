@@ -6,7 +6,8 @@ import {
   Button,
   Checkbox,
   Tile,
-  SwitcherDivider
+  SwitcherDivider,
+  Loading
 } from "carbon-components-react";
 import health_logo from '../../assets/images/health.svg';
 import { Content } from 'carbon-components-react/lib/components/UIShell';
@@ -16,21 +17,41 @@ class Login extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      username: '',
+      password: '',
+      dataLoader: false
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.signinBtn = this.signinBtn.bind(this);
   }
 
-  signinBtn = () => {
-    this.props.history.push('/');
-    /*const reqObj = {
-      "username":"480900901",
-      "password":"medicsdsdine"
+  handleChange(event) {
+    this.setState({ [event.target.id]: event.target.value });
+  }
+
+  signinBtn = (event) => {
+    event.preventDefault();
+    this.setState({dataLoader: true});
+    const { username, password } = this.state;
+    const reqObj = {
+      "username": username,
+      "password": password
     };
-    return postapi('login', reqObj)
+    return postapi('LOGIN', reqObj)
     .then(responseJson => {
-        console.log('responseJson => ', responseJson.responseCode);
-    })*/
+      const userData = JSON.stringify({
+        name: responseJson.name, 
+        usertype: responseJson.usertype
+      });
+      localStorage.setItem('user_details', userData);
+      this.setState({dataLoader: false});
+      this.props.history.push('/');
+    })
   }
 
   render() {
+    const { username, password, dataLoader } = this.state;
 
     const TextInputProps = {
       className: 'text-field-style',
@@ -41,10 +62,7 @@ class Login extends Component {
     const InvalidPasswordProps = {
       className: 'text-field-style',
       id: 'password',
-      labelText: 'Password',
-      invalid: false,
-      invalidText:
-        'Your password must be at least 6 characters as well as contain at least one uppercase, one lowercase, and one number.',
+      labelText: 'Password'
     };
 
     const checkboxEvents = {
@@ -52,9 +70,16 @@ class Login extends Component {
       labelText: 'Remember me',
     };
 
+    const props = () => ({
+      active: true,
+      withOverlay: true,
+      small: false
+    });
+
     return (
       <React.Fragment>
         <Content className="login-container">
+          {dataLoader ? <Loading {...props()} className='loader-login' /> : null}
           <Tile className="form-container">
             <div className="header-div">
               <img src={health_logo} className="login-logo" alt="logo" />
@@ -63,19 +88,20 @@ class Login extends Component {
             </div>            
             <SwitcherDivider className="divide-line" />
             <Form className="form-style">
-              <TextInput {...TextInputProps} />
+              <TextInput {...TextInputProps} value={username} onChange={this.handleChange} />
 
               <TextInput
                 type="password"
                 required
-                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
                 {...InvalidPasswordProps}
+                value={password}
+                onChange={this.handleChange}
               />
 
               <Checkbox {...checkboxEvents} id="checkbox-1" />
 
               <div className="btn-div">
-                <Button type="submit" className="signin-btn" onClick={() => { this.signinBtn() }}>
+                <Button type="submit" className="signin-btn" disabled={username === '' || password === ''} onClick={this.signinBtn}>
                   <span>Sign In</span>
                 </Button>
               </div>
