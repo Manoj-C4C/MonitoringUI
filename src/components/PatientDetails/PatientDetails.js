@@ -11,8 +11,7 @@ import {
 } from "@carbon/icons-react";
 import {
   TextArea,
-  Select,
-  SelectItem,
+  Select
 } from "carbon-components-react";
 import { LineChart } from "@carbon/charts-react";
 import { Link } from "react-router-dom";
@@ -87,7 +86,6 @@ class PatientDetails extends React.Component {
           </Link>
           <div className="refer">
             <NotebookReference20 /> <span>Refer to another Hospital</span>
-           
           </div>
         </div>
         <div className="maincover">
