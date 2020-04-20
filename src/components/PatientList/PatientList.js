@@ -208,7 +208,7 @@ class PatientList extends Component {
               })
             }
           </div>
-        </div>) : <PatientDetails />
+        </div>) : <PatientDetails id={this.state.patientdetail} />
         }
       </React.Fragment>
     );
