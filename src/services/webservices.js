@@ -1,14 +1,6 @@
-const BASE_URL = 'http://7587e382.ngrok.io/';
-const API_ENDPOINT_ENUM = {
-    "LOGIN": "login",
-    "POSITIVE_PATIENTS": "patients/status/101",
-    "POSSIBLE_PATIENTS": "patients/status/102",
-    "ALL_PATIENTS": "patients/status/103"
-}
-
+const BASE_URL = 'http://f9b37789.ngrok.io/';
 
 function getapi(endpoint) {
-    endpoint = API_ENDPOINT_ENUM[endpoint];
     const apiObj = {
         method: 'GET',
         headers: {
@@ -25,7 +17,6 @@ function getapi(endpoint) {
 }
 
 function postapi(endpoint, obj) {
-    endpoint = API_ENDPOINT_ENUM[endpoint];
     const apiObj = {
         method: 'POST',
         headers: {

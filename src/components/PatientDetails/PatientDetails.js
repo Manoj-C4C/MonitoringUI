@@ -80,7 +80,7 @@ class PatientDetails extends React.Component {
     return (
       <div className="mainbox">
         <div className="navigation">
-          <Link to="/">
+          <Link to="/dashboard">
             <ChevronLeft20 /> <span>Back</span>
           </Link>
           <div className="refer">

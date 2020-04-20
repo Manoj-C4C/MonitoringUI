@@ -63,7 +63,7 @@ class SideMenu extends Component {
                     aria-label="Side navigation"
                     className="sidenav-style">
                     <SideNavItems>
-                        <SideNavLink renderIcon={Events32} onClick={() => { this.switchSideTab('') }} className={`list-style ${sideTabType === '' ? 'list-style_selected' : ''}`}>
+                        <SideNavLink renderIcon={Events32} onClick={() => { this.switchSideTab('dashboard') }} className={`list-style ${sideTabType === 'dashboard' ? 'list-style_selected' : ''}`}>
                             <p className="text-color">Patients Dashboard</p>
                         </SideNavLink>
                         <SideNavLink renderIcon={HelpFilled32} onClick={() => { this.switchSideTab('help') }} className={`list-style ${sideTabType === 'help' ? 'list-style_selected' : ''}`}>

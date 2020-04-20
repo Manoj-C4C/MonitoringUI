@@ -38,15 +38,16 @@ class Login extends Component {
       "username": username,
       "password": password
     };
-    return postapi('LOGIN', reqObj)
+    return postapi('login', reqObj)
     .then(responseJson => {
       const userData = JSON.stringify({
+        id: responseJson._id,
         name: responseJson.name, 
         usertype: responseJson.usertype
       });
       localStorage.setItem('user_details', userData);
       this.setState({dataLoader: false});
-      this.props.history.push('/');
+      this.props.history.push('/dashboard');
     })
   }
 

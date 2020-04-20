@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import moment from 'moment'
 import "./PatientList.scss";
 import {
   Tile,
@@ -25,11 +26,16 @@ class PatientList extends Component {
   }
 
   componentDidMount() {
+    let endpoint = '';
     if(localStorage.getItem('user_details')) {
       const user_details = JSON.parse(localStorage.getItem('user_details'));
-      this.setState({userType: user_details.usertype === 'doctor' ? 1 : 2});      
-    } 
-    const endpoint = this.props.userStatus === 'All' ? 'ALL_PATIENTS' : (this.props.userStatus === 'Positive' ? 'POSITIVE_PATIENTS' : 'POSSIBLE_PATIENTS');
+      this.setState({userType: user_details.usertype === 'doctor' ? 1 : 2});       
+      if(user_details.usertype === 'doctor') {
+        endpoint = this.props.userStatus === 'All' ? 'doctors/103/'+user_details.id : (this.props.userStatus === 'Positive' ? 'doctors/101/'+user_details.id : 'doctors/102/'+user_details.id);
+      } else {
+        endpoint = this.props.userStatus === 'All' ? 'patients/status/103' : (this.props.userStatus === 'Positive' ? 'patients/status/101' : 'patients/status/102');
+      }
+    }
     return getapi(endpoint)
     .then(responseJson => {
         this.setState({dataLoader: false});
@@ -57,6 +63,26 @@ class PatientList extends Component {
   checkSOS = (possibleCount) => {
     const sosCount = this.state.patientsList.filter(value => (value.morbidity !== 'none' && value.healthstatus === 'positive')).length;
     this.props.getSosCount({sosCount, possibleCount});
+  }
+
+  getLastUpdatedInfo(value) {
+    if(value.currentAssign === 'Operator') {
+      if(value.assignedByDoctor && value.assignedByDoctor.hasOwnProperty('name')) {
+        return (value.assignedByDoctor.name+', '+this.generateTimeFormat(value.assignedByDoctor.timestamp));
+      } else {
+        return ('Dummy user, '+this.generateTimeFormat(new Date().getTime()))
+      }
+    } else {
+      if(value.assignedByOperator && value.assignedByOperator.hasOwnProperty('name')) {
+        return (value.assignedByOperator.name+', '+this.generateTimeFormat(value.assignedByOperator.timestamp));
+      } else {
+        return ('Dummy user, '+this.generateTimeFormat(new Date().getTime()))
+      }
+    }
+  }
+
+  generateTimeFormat(timestamp) {
+    return moment(Number(timestamp)).format('h:mm a, DD MMM');
   }
 
   render() {
@@ -159,7 +185,7 @@ class PatientList extends Component {
                         <p className="label_value">{value.healthstatus}</p>
                       </div>
                       <p><Location16 /> <span className="location-style">497 Evergreen Rd, Roseville, CA 95673</span></p>
-                      <p className="time-updated"><Information16 /> Last updated by Test user, 12th Jan 2020</p>
+                      <p className="time-updated"><Information16 /> Last updated by {this.getLastUpdatedInfo(value)}</p>
                     </Tile>
                   </Link>
                 )
