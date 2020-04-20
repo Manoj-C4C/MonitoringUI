@@ -9,7 +9,9 @@ import {
   ArrowRight20,
   NotebookReference20
 } from "@carbon/icons-react";
-import { TextArea, Loading } from "carbon-components-react";
+import { TextArea, Loading ,Select,
+  SelectItem,
+  Dropdown} from "carbon-components-react";
 import { LineChart } from "@carbon/charts-react";
 import { getapi } from "../../services/webservices";
 import { Link } from "react-router-dom";
@@ -19,6 +21,7 @@ class PatientDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      userType: 1,
       patient: {},
       dataLoader: true,
       data: [
@@ -78,6 +81,10 @@ class PatientDetails extends React.Component {
     };
   }
   componentDidMount() {
+    if(localStorage.getItem('user_details')) {
+      const user_details = JSON.parse(localStorage.getItem('user_details'));
+      this.setState({userType: user_details.usertype === 'doctor' ? 1 : 2}); 
+    }
     const endpoint = `patients/${this.props.id}`;
     return getapi(endpoint).then(responseJson => {
       this.setState({ dataLoader: false });
@@ -88,6 +95,26 @@ class PatientDetails extends React.Component {
   }
 
   render() {
+    const {userType} = this.state;
+    const items = [
+      {
+        id: "option-1",
+        text:userType===1 ? 'Operator':'Doctor',
+      },
+      {
+        id: "option-2",
+        text: "Hospital Administrator"
+      },
+      {
+        id: "option-3",
+        text: "Hospital Emergency"
+      },
+      {
+        id: "option-4",
+        text: "Other Departments"
+      }
+    ];
+ 
     const props = () => ({
       active: true,
       withOverlay: false,
@@ -110,6 +137,15 @@ class PatientDetails extends React.Component {
                 <div className="refer">
                   <NotebookReference20 /> <span>Refer to another Hospital</span>
                 </div>
+                <div className="slection">
+              <Dropdown
+                items={items}
+                id="dropdown-search"
+                label="Assign to"
+                className="dropdown-search"
+                itemToString={item => (item ? item.text : "")}
+              />
+            </div>
               </div>
               <div className="maincover">
                 {patient.qurantine && patient.qurantine.isQurantine ? (
@@ -210,12 +246,13 @@ class PatientDetails extends React.Component {
                           <div className="time">10:15 am, 4 Apr 2020</div>
                         </div>
                       </div>
+                      {userType === 1 ? 
                       <div className="entry">
                         <div className="entrybox">
                           <ArrowRight20 />
                           <TextArea className="textarea" labelText="" />
                         </div>
-                      </div>
+                      </div>:null}
                     </div>
                   </div>
                   <div className="clearfix"></div>
