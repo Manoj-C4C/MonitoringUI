@@ -43,13 +43,13 @@ class Monitoring extends Component {
             </div>
             <Tabs className="tabs-style">
               <Tab id="tab-1" label="All Patients" className="tab-list" onClick={() => { this.tabClk('All') }}>
-                {tabType === 'All' ? <PatientList {...this.props} userStatus={tabType} getSosCount={this.handleSosCount} /> : null }
+                {tabType === 'All' ? <div className="some-content"><PatientList {...this.props} userStatus={tabType} getSosCount={this.handleSosCount} /></div> : null }
               </Tab>
               <Tab id="tab-2" label="COVID-19 Positive" className="tab-list" onClick={() => { this.tabClk('Positive') }}>
-                {tabType === 'Positive' ? <PatientList {...this.props} userStatus={tabType} getSosCount={this.handleSosCount} /> : null }
+                {tabType === 'Positive' ? <div className="some-content"><PatientList {...this.props} userStatus={tabType} getSosCount={this.handleSosCount} /></div> : null }
               </Tab>
               <Tab id="tab-3" label="COVID-19 Possible" className="tab-list" onClick={() => { this.tabClk('Possible') }}>
-                {tabType === 'Possible' ? <PatientList {...this.props} userStatus={tabType} getSosCount={this.handleSosCount} /> : null }
+                {tabType === 'Possible' ? <div className="some-content"><PatientList {...this.props} userStatus={tabType} getSosCount={this.handleSosCount} /></div> : null }
               </Tab>
             </Tabs>
           </Tile>

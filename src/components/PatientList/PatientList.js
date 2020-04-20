@@ -75,7 +75,7 @@ class PatientList extends Component {
       }
     ];
 
-    const props = () => ({
+    const loadingProps = () => ({
       active: true,
       withOverlay: false,
       small: false
@@ -83,7 +83,7 @@ class PatientList extends Component {
 
     return (
       <React.Fragment>
-        {dataLoader ? <div className='loader-style'><Loading {...props()} /></div> :
+        {dataLoader ? <div className='loader-style'><Loading {...loadingProps()} /></div> :
         !this.state.patientdetail ? (<div>
           <div className="bx--row row-margin">
             <div className="col-lg-6 patient-count">

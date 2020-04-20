@@ -5,7 +5,6 @@ import Monitoring from "./components/Monitoring/Monitoring";
 import Login from "./components/Login/Login";
 import HelpCenter from "./components/HelpCenter/HelpCenter";
 import Settings from "./components/Settings/Settings";
-import PatientDetails from "./components/PatientDetails/PatientDetails";
 
 class App extends Component {
   render() {

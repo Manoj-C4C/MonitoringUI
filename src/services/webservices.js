@@ -1,4 +1,4 @@
-const BASE_URL = 'http://c6c48615.ngrok.io/';
+const BASE_URL = 'http://7587e382.ngrok.io/';
 const API_ENDPOINT_ENUM = {
     "LOGIN": "login",
     "POSITIVE_PATIENTS": "patients/status/101",
