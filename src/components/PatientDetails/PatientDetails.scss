@@ -1,16 +1,52 @@
 .green-color {
-  color: #00A30B;
+  color: #00a30b;
 }
 .red-color {
-  color: #DA1E28;
+  color: #da1e28;
 }
 .yellow-color {
-  color: #FF9300;
+  color: #ff9300;
 }
 .clearfix {
   clear: both;
 }
+
 .some-content {
+  .bx--modal-header,
+  .bx--modal-content {
+    padding: 1rem;
+    margin-bottom: 0px;
+  }
+  .datatable {
+    .header {
+      .unit {
+        float: left;
+        font-weight: bold;
+        width: 33.3%;
+      }
+    }
+    .datarow {
+      margin-top: 7px;
+      .row {
+        padding-top: 7px;
+        border-top: 1px solid #cacaca;
+        .unit {
+          float: left;
+          width: 33.3%;
+          .assignbtn {
+            background-color: #007d79;
+            text-align: center;
+            padding: 0px 24px 0px;
+            min-height: 36px;
+            margin: 14px 14px 22px;
+          }
+          .disable {
+            background-color: #cacaca;
+          }
+        }
+      }
+    }
+  }
   .mainbox {
     .navigation {
       padding: 6px 0px 33px 0px;
@@ -29,7 +65,7 @@
         span {
           vertical-align: 5px;
         }
-        .slection {
+        .selection {
           float: right;
           margin-top: -7px;
           margin-left: 20px;
@@ -44,7 +80,7 @@
               width: 202px;
               background-color: white;
               .bx--list-box__menu-item {
-                .bx--list-box__menu-item__option {
+                .bx--list-box_menu-item_option {
                   overflow: auto;
                 }
               }

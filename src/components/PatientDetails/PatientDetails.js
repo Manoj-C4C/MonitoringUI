@@ -1,5 +1,5 @@
 import React from "react";
-import moment from 'moment';
+import moment from "moment";
 import "./PatientDetails.scss";
 import {
   ChevronLeft20,
@@ -10,11 +10,15 @@ import {
   ArrowRight20,
   NotebookReference20
 } from "@carbon/icons-react";
-import { TextArea, Loading ,Select,
-  SelectItem,
-  Dropdown} from "carbon-components-react";
+import {
+  TextArea,
+  Loading,
+  Modal,
+  Dropdown,
+  Button
+} from "carbon-components-react";
 import { LineChart } from "@carbon/charts-react";
-import { getapi, postapi } from "../../services/webservices";
+import { getapi, postapi, putapi } from "../../services/webservices";
 import { Link } from "react-router-dom";
 import "@carbon/charts/styles.css";
 
@@ -23,9 +27,13 @@ class PatientDetails extends React.Component {
     super(props);
     this.state = {
       userType: 1,
+      userDetail: {},
+      modal: false,
       patient: {},
+      assigned: false,
       dataLoader: true,
-      comment: '',
+      comment: "",
+      doctorList: [],
       commentsList: [],
       data: [
         {
@@ -86,10 +94,12 @@ class PatientDetails extends React.Component {
   }
   componentDidMount() {
     this.getCommentList();
-    if(localStorage.getItem('user_details')) {
-      const user_details = JSON.parse(localStorage.getItem('user_details'));
-      this.setState({userType: user_details.usertype === 'doctor' ? 1 : 2});
-    }    
+    this.getDoctors();
+    if (localStorage.getItem("user_details")) {
+      const user_details = JSON.parse(localStorage.getItem("user_details"));
+      this.setState({ userType: user_details.usertype === "doctor" ? 1 : 2 });
+      this.setState({ userDetail: user_details });
+    }
 
     const endpoint = `patients/${this.props.id}`;
     return getapi(endpoint).then(responseJson => {
@@ -100,10 +110,19 @@ class PatientDetails extends React.Component {
     });
   }
 
+  getDoctors() {
+    const endpoint = `doctors`;
+    return getapi(endpoint).then(responseJson => {
+      if (responseJson.responseCode !== "ERROR") {
+        this.setState({ doctorList: responseJson.docs });
+      }
+    });
+  }
+
   getCommentList() {
     const endpoint = `patients/comment/${this.props.id}`;
     return getapi(endpoint).then(responseJson => {
-      if(responseJson.responseCode !== 'ERROR') {
+      if (responseJson.responseCode !== "ERROR") {
         this.setState({ commentsList: responseJson.docs[0].doctorscreening });
       }
     });
@@ -112,17 +131,16 @@ class PatientDetails extends React.Component {
   commentClk() {
     const endpoint = `patients/comment/${this.props.id}`;
     const reqObj = {
-      "comment": this.state.comment, 
-      "timestamp": new Date().getTime(), 
-      "doctor": this.props.id
+      comment: this.state.comment,
+      timestamp: new Date().getTime(),
+      doctor: this.props.id
     };
-    return postapi(endpoint, reqObj)
-    .then(responseJson => {
-      if(responseJson.responseCode !== 'ERROR') {
-        this.setState({comment: ''});
+    return postapi(endpoint, reqObj).then(responseJson => {
+      if (responseJson.responseCode !== "ERROR") {
+        this.setState({ comment: "" });
         this.getCommentList();
       }
-    })
+    });
   }
 
   handleChange(event) {
@@ -130,15 +148,38 @@ class PatientDetails extends React.Component {
   }
 
   generateTimeFormat(timestamp) {
-    return moment(Number(timestamp)).format('h:mm a, DD MMM YYYY');
+    return moment(Number(timestamp)).format("h:mm a, DD MMM YYYY");
   }
 
+  assign(val, event) {
+    const endpoint = `patients/assign-doctor/${this.props.id}`;
+    const reqObj = {
+      doctorId: val,
+      operatorId: this.state.userDetail.id,
+      timestamp: new Date().getTime(),
+      operatorName: this.state.userDetail.name
+    };
+
+    return putapi(endpoint, reqObj).then(responseJson => {
+      if (responseJson.responseCode !== "ERROR") {
+        this.setState({ assigned: true });
+      }
+    });
+  }
+  selection(event) {
+    if (event.selectedItem.text === "Doctor") {
+      this.setState({ modal: true, assigned: false });
+    }
+  }
+  close() {
+    this.setState({ modal: false });
+  }
   render() {
-    const {userType} = this.state;
+    const { userType, doctorList } = this.state;
     const items = [
       {
         id: "option-1",
-        text:userType===1 ? 'Operator':'Doctor',
+        text: userType === 1 ? "Operator" : "Doctor"
       },
       {
         id: "option-2",
@@ -153,15 +194,59 @@ class PatientDetails extends React.Component {
         text: "Other Departments"
       }
     ];
- 
+
     const props = () => ({
       active: true,
       withOverlay: false,
       small: false
     });
     const { patient, dataLoader, comment, commentsList } = this.state;
+    const modalprops = () => ({
+      className: "some-class",
+      open: this.state.modal,
+      passiveModal: true,
+      modalHeading: "Select Doctor",
+      onRequestClose: this.close.bind(this)
+    });
     return (
       <React.Fragment>
+        <Modal {...modalprops()}>
+          <div className="datatable">
+            {this.state.assigned ? "Assigned!" : null}
+            <div className="header">
+              <div className="unit">Doctor ID</div>
+              <div className="unit">Doctor name</div>
+              <div className="unit">Action</div>
+              <div className="clearfix"></div>
+            </div>
+            <div className="datarow">
+              {doctorList.length > 0 &&
+                doctorList.map((val, key) => {
+                  return (
+                    <div key={key} className="row">
+                      <div className="unit">{val._id}</div>
+                      <div className="unit">{val.name}</div>
+                      <div className="unit">
+                        {true ? (
+                          <Button
+                            onClick={this.assign.bind(this, val._id)}
+                            className="assignbtn"
+                          >
+                            Assign
+                          </Button>
+                        ) : (
+                          <Button className="assignbtn disable" disabled>
+                            Assign
+                          </Button>
+                        )}
+                      </div>
+                      <div className="clearfix"></div>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+        </Modal>
         {dataLoader ? (
           <div className="loader-style">
             <Loading {...props()} />
@@ -175,16 +260,18 @@ class PatientDetails extends React.Component {
                 </Link>
                 <div className="refer">
                   <NotebookReference20 /> <span>Refer to another Hospital</span>
+                  <div className="selection">
+                    <Dropdown
+                      items={items}
+                      id="dropdown-search"
+                      name="dropdown"
+                      label="Assign to"
+                      onChange={this.selection.bind(this)}
+                      className="dropdown-search"
+                      itemToString={item => (item ? item.text : "")}
+                    />
+                  </div>
                 </div>
-                <div className="slection">
-              <Dropdown
-                items={items}
-                id="dropdown-search"
-                label="Assign to"
-                className="dropdown-search"
-                itemToString={item => (item ? item.text : "")}
-              />
-            </div>
               </div>
               <div className="maincover">
                 {patient.qurantine && patient.qurantine.isQurantine ? (
@@ -192,7 +279,17 @@ class PatientDetails extends React.Component {
                 ) : null}
                 <div className="header">
                   <div className="namenid">
-                    <div className={`name ${patient.healthstatus === 'positive' ? 'red-color' : (patient.healthstatus === 'possible' ? 'yellow-color' : 'green-color')}`}>{patient.name}</div>
+                    <div
+                      className={`name ${
+                        patient.healthstatus === "positive"
+                          ? "red-color"
+                          : patient.healthstatus === "possible"
+                          ? "yellow-color"
+                          : "green-color"
+                      }`}
+                    >
+                      {patient.name}
+                    </div>
                     <div className="id">{patient._id}</div>
                   </div>
                   <div className="tabdesc">
@@ -264,28 +361,43 @@ class PatientDetails extends React.Component {
                     <div className="head">Patient History</div>
                     <div className="timebox">
                       {commentsList.map((value, index) => {
-                        return(
-                          <div key={index} className={`timeboxdetail ${index !== commentsList.length-1 ? 'bdrl' : ''}`} >
+                        return (
+                          <div
+                            key={index}
+                            className={`timeboxdetail ${
+                              index !== commentsList.length - 1 ? "bdrl" : ""
+                            }`}
+                          >
                             <div className="timeicon">
                               <CircleFilled20 />
                             </div>
                             <div className="timedetail">
-                              <div className="detail">
-                                {value.comment}
+                              <div className="detail">{value.comment}</div>
+                              <div className="time">
+                                {this.generateTimeFormat(value.timestamp)}
                               </div>
-                              <div className="time">{this.generateTimeFormat(value.timestamp)}</div>
                             </div>
                           </div>
-                        )
+                        );
                       })}
-                      {userType === 1 ?
+                      {userType === 1 ? (
                         <div className="entry">
                           <div className="entrybox">
-                            <ArrowRight20 onClick={() => { this.commentClk() }} />
-                            <TextArea className="textarea" labelText="" id="comment" value={comment} onChange={this.handleChange} />
+                            <ArrowRight20
+                              onClick={() => {
+                                this.commentClk();
+                              }}
+                            />
+                            <TextArea
+                              className="textarea"
+                              labelText=""
+                              id="comment"
+                              value={comment}
+                              onChange={this.handleChange}
+                            />
                           </div>
-                        </div> : null 
-                      }
+                        </div>
+                      ) : null}
                     </div>
                   </div>
                   <div className="clearfix"></div>
