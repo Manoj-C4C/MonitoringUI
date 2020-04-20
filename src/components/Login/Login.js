@@ -40,14 +40,16 @@ class Login extends Component {
     };
     return postapi('login', reqObj)
     .then(responseJson => {
-      const userData = JSON.stringify({
-        id: responseJson._id,
-        name: responseJson.name, 
-        usertype: responseJson.usertype
-      });
-      localStorage.setItem('user_details', userData);
       this.setState({dataLoader: false});
-      this.props.history.push('/dashboard');
+      if(responseJson.responseCode !== 'ERROR') {
+        const userData = JSON.stringify({
+          id: responseJson._id,
+          name: responseJson.name, 
+          usertype: responseJson.usertype
+        });
+        localStorage.setItem('user_details', userData);
+        this.props.history.push('/dashboard');
+      }
     })
   }
 

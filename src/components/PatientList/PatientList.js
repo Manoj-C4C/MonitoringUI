@@ -85,6 +85,12 @@ class PatientList extends Component {
     return moment(Number(timestamp)).format('h:mm a, DD MMM');
   }
 
+  getTravelHistory(value) {
+    const indx = value.symptom.findIndex(x => x.family === 'myself');
+    if(indx === -1) return 'Dummy';
+    else return value.symptom[indx].experience;
+  }
+
   render() {
 
     const { userType, isSearchBoxOpen, patientsCount, patientsList, dataLoader } = this.state;
@@ -164,7 +170,7 @@ class PatientList extends Component {
                       </div>
                       <div>
                         <span className="patient-id">{value._id}</span>
-                        {value.qurantine.isQurantine ? 
+                        {value.qurantine && value.qurantine.isQurantine ? 
                           <div className="title_strip">Home Quarantine</div> : null
                         }
                       </div>
@@ -178,7 +184,7 @@ class PatientList extends Component {
                       </div>
                       <div className="patient_box">
                         <p className="label_title">Travel History</p>
-                        <p className="label_value">China</p>
+                      <p className="label_value">{this.getTravelHistory(value)}</p>
                       </div>
                       <div className="patient_box">
                         <p className="label_title">COVID-19 Status</p>

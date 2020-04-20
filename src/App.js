@@ -1,10 +1,18 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect  } from "react-router-dom";
 import "./index.scss";
 import Monitoring from "./components/Monitoring/Monitoring";
 import Login from "./components/Login/Login";
 import HelpCenter from "./components/HelpCenter/HelpCenter";
 import Settings from "./components/Settings/Settings";
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={(props) => (
+    localStorage.getItem('user_details') === null
+      ? <Redirect to='/login' />
+      : <Component {...props} />
+  )} />
+)
 
 class App extends Component {
   render() {
@@ -12,8 +20,8 @@ class App extends Component {
       <Router>
         <Switch>
           <Route exact path="/login" component={Login} />
-          <Route exact path="/dashboard" component={Monitoring} />
-          <Route
+          <PrivateRoute path='/dashboard' component={Monitoring} />
+          <PrivateRoute
             exact
             path="/patientdetail/:patientid"
             component={Monitoring}
@@ -27,3 +35,4 @@ class App extends Component {
 }
 
 export default App;
+

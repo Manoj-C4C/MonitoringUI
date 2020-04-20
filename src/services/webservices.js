@@ -12,7 +12,7 @@ function getapi(endpoint) {
             return response.json();
         })
         .catch(err => {
-            return { responseMessage: "Something went wrong. Please try again." }
+            return { responseCode: 'ERROR', responseMessage: "Something went wrong." }
         });
 }
 
@@ -29,7 +29,7 @@ function postapi(endpoint, obj) {
             return response.json();
         })
         .catch(err => {
-            return { responseMessage: "Something went wrong. Please try again." }
+            return { responseCode: 'ERROR', responseMessage: "Something went wrong." }
         });
 }
 
