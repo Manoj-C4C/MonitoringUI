@@ -1,4 +1,5 @@
 import React from "react";
+import moment from 'moment';
 import "./PatientDetails.scss";
 import {
   ChevronLeft20,
@@ -13,7 +14,7 @@ import { TextArea, Loading ,Select,
   SelectItem,
   Dropdown} from "carbon-components-react";
 import { LineChart } from "@carbon/charts-react";
-import { getapi } from "../../services/webservices";
+import { getapi, postapi } from "../../services/webservices";
 import { Link } from "react-router-dom";
 import "@carbon/charts/styles.css";
 
@@ -24,6 +25,8 @@ class PatientDetails extends React.Component {
       userType: 1,
       patient: {},
       dataLoader: true,
+      comment: '',
+      commentsList: [],
       data: [
         {
           group: "Dataset 1",
@@ -79,12 +82,15 @@ class PatientDetails extends React.Component {
         height: "177px"
       }
     };
+    this.handleChange = this.handleChange.bind(this);
   }
   componentDidMount() {
+    this.getCommentList();
     if(localStorage.getItem('user_details')) {
       const user_details = JSON.parse(localStorage.getItem('user_details'));
-      this.setState({userType: user_details.usertype === 'doctor' ? 1 : 2}); 
-    }
+      this.setState({userType: user_details.usertype === 'doctor' ? 1 : 2});
+    }    
+
     const endpoint = `patients/${this.props.id}`;
     return getapi(endpoint).then(responseJson => {
       this.setState({ dataLoader: false });
@@ -92,6 +98,39 @@ class PatientDetails extends React.Component {
         this.setState({ patient: responseJson.docs[0] });
       }
     });
+  }
+
+  getCommentList() {
+    const endpoint = `patients/comment/${this.props.id}`;
+    return getapi(endpoint).then(responseJson => {
+      if(responseJson.responseCode !== 'ERROR') {
+        this.setState({ commentsList: responseJson.docs[0].doctorscreening });
+      }
+    });
+  }
+
+  commentClk() {
+    const endpoint = `patients/comment/${this.props.id}`;
+    const reqObj = {
+      "comment": this.state.comment, 
+      "timestamp": new Date().getTime(), 
+      "doctor": this.props.id
+    };
+    return postapi(endpoint, reqObj)
+    .then(responseJson => {
+      if(responseJson.responseCode !== 'ERROR') {
+        this.setState({comment: ''});
+        this.getCommentList();
+      }
+    })
+  }
+
+  handleChange(event) {
+    this.setState({ [event.target.id]: event.target.value });
+  }
+
+  generateTimeFormat(timestamp) {
+    return moment(Number(timestamp)).format('h:mm a, DD MMM YYYY');
   }
 
   render() {
@@ -120,7 +159,7 @@ class PatientDetails extends React.Component {
       withOverlay: false,
       small: false
     });
-    const { patient, dataLoader } = this.state;
+    const { patient, dataLoader, comment, commentsList } = this.state;
     return (
       <React.Fragment>
         {dataLoader ? (
@@ -153,7 +192,7 @@ class PatientDetails extends React.Component {
                 ) : null}
                 <div className="header">
                   <div className="namenid">
-                    <div className="name">{patient.name}</div>
+                    <div className={`name ${patient.healthstatus === 'positive' ? 'red-color' : (patient.healthstatus === 'possible' ? 'yellow-color' : 'green-color')}`}>{patient.name}</div>
                     <div className="id">{patient._id}</div>
                   </div>
                   <div className="tabdesc">
@@ -224,35 +263,29 @@ class PatientDetails extends React.Component {
                   <div className="timeline">
                     <div className="head">Patient History</div>
                     <div className="timebox">
-                      <div className="timeboxdetail bdrl">
-                        <div className="timeicon">
-                          <CircleFilled20 />
-                        </div>
-                        <div className="timedetail">
-                          <div className="detail">
-                            Travalled back from italy on 2nd April 2020
+                      {commentsList.map((value, index) => {
+                        return(
+                          <div key={index} className={`timeboxdetail ${index !== commentsList.length-1 ? 'bdrl' : ''}`} >
+                            <div className="timeicon">
+                              <CircleFilled20 />
+                            </div>
+                            <div className="timedetail">
+                              <div className="detail">
+                                {value.comment}
+                              </div>
+                              <div className="time">{this.generateTimeFormat(value.timestamp)}</div>
+                            </div>
                           </div>
-                          <div className="time">10:15 am, 4 Apr 2020</div>
-                        </div>
-                      </div>
-                      <div className="timeboxdetail">
-                        <div className="timeicon">
-                          <CircleFilled20 />
-                        </div>
-                        <div className="timedetail">
-                          <div className="detail">
-                            Travalled back from italy on 2nd April 2020
+                        )
+                      })}
+                      {userType === 1 ?
+                        <div className="entry">
+                          <div className="entrybox">
+                            <ArrowRight20 onClick={() => { this.commentClk() }} />
+                            <TextArea className="textarea" labelText="" id="comment" value={comment} onChange={this.handleChange} />
                           </div>
-                          <div className="time">10:15 am, 4 Apr 2020</div>
-                        </div>
-                      </div>
-                      {userType === 1 ? 
-                      <div className="entry">
-                        <div className="entrybox">
-                          <ArrowRight20 />
-                          <TextArea className="textarea" labelText="" />
-                        </div>
-                      </div>:null}
+                        </div> : null 
+                      }
                     </div>
                   </div>
                   <div className="clearfix"></div>
