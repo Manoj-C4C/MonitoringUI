@@ -7,6 +7,9 @@
 .yellow-color {
   color: #ff9300;
 }
+.web-color {
+  color: #007D79;
+}
 .clearfix {
   clear: both;
 }
@@ -76,8 +79,9 @@
             width: 133px;
             height: 32px;
             .bx--list-box__menu {
-              left: -68px;
-              width: 202px;
+              left: -94px;
+              min-width: 225px;
+              min-height: 120px;
               background-color: white;
               .bx--list-box__menu-item {
                 .bx--list-box_menu-item_option {
@@ -102,13 +106,11 @@
         margin-left: 22px;
       }
       .header {
-        padding: 0px 0px 0px 26px;
         .namenid {
           float: left;
-          padding: 26px 8px 26px 0px;
-          min-width: 194px;
           border-right: 1px solid #cacaca;
-          margin-right: 9px;
+          padding: 26px 0 26px 21px;
+          width: 25%;
           .name {
             padding-bottom: 9px;
             font-size: 21px;
@@ -120,12 +122,13 @@
           }
         }
         .tabdesc {
-          float: left;
-          padding: 24px 0px 9px 0px;
+          float: right;
+          padding: 26px 0 26px 0;
+          width: 75%;
           .desc {
             float: left;
             font-size: 12px;
-            margin: 0px 21px 0px 21px;
+            margin: 0px 14px 0px 14px;
             .desctitle {
               color: #161616;
               padding: 7px 0px 6px;
@@ -134,10 +137,6 @@
             .descdetail {
               color: #525252;
             }
-          }
-          .travel {
-          }
-          .test {
           }
         }
       }
@@ -187,6 +186,33 @@
               }
             }
           }
+          .symptom-card {
+            background-color: #fff;
+            margin-bottom: 20px;
+            box-shadow: 2px 2px 1px -1px #8d8d8d;
+
+            .row-padding {
+              padding: 0 0 15px 15px;
+
+              .icon-label {
+                margin: 2px 0 0 6px;
+              }
+            }
+
+            .medicine-containers {              
+              .text-container {
+                border: 1px solid #007D79;
+                margin: 0px 8px 8px 0px;
+                border-radius: 30px;
+                height: 25px;
+
+                .text-label {
+                  line-height: 20px;
+                  margin: 0 10px 0 10px;
+                }
+              }
+            }
+          }
         }
         .timeline {
           width: 47%;
@@ -228,14 +254,14 @@
                   z-index: 9;
                   position: absolute;
                   right: 0px;
-                  margin: 15px 12px 0px;
+                  margin: 13px 12px 0px;
                   cursor: pointer;
                 }
                 .textarea {
                   background-color: white;
                   resize: none;
                   border: 1px solid #8d8d8d;
-                  height: 55px;
+                  height: 45px;
                 }
               }
             }

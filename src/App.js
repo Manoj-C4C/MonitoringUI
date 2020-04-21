@@ -26,8 +26,8 @@ class App extends Component {
             path="/patientdetail/:patientid"
             component={Monitoring}
           />
-          <Route exact path="/help" component={HelpCenter} />
-          <Route exact path="/settings" component={Settings} />
+          <PrivateRoute exact path="/help" component={HelpCenter} />
+          <PrivateRoute exact path="/settings" component={Settings} />
         </Switch>
       </Router>
     );

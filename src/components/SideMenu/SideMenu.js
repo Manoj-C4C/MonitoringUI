@@ -8,7 +8,9 @@ import {
     SideNavLink,
     HeaderGlobalBar,
     HeaderGlobalAction,
-    HeaderPanel
+    HeaderPanel,
+    Switcher,
+    SwitcherItem
 } from 'carbon-components-react/lib/components/UIShell';
 import { Events32, HelpFilled32, Settings32, Menu16, UserAvatar16, ChevronDown16 } from '@carbon/icons-react';
 
@@ -18,7 +20,18 @@ class SideMenu extends Component {
         super(props);
         this.state = {
             sideTabType: this.props.history.location.pathname.split('/')[1],
-            isPanelOpen: false
+            isPanelOpen: false,
+            isSideNavOpen: true,
+            userDetail: {}
+        }
+        this.logoutClk = this.logoutClk.bind(this);
+        this.menuClk = this.menuClk.bind(this);        
+    }
+
+    componentDidMount() {
+        if (localStorage.getItem("user_details")) {
+            const user_details = JSON.parse(localStorage.getItem("user_details"));
+            this.setState({ userDetail: user_details });
         }
     }
 
@@ -34,13 +47,24 @@ class SideMenu extends Component {
         this.setState({ isPanelOpen: !this.state.isPanelOpen });
     }
 
+    logoutClk(event) {
+        event.preventDefault();
+        localStorage.removeItem('user_details');
+        this.props.history.push('/login');
+    }
+
+    menuClk(event) {
+        event.preventDefault();
+        this.setState({ isSideNavOpen: !this.state.isSideNavOpen });
+    }
+
     render() {
-        const { sideTabType, isPanelOpen } = this.state;
+        const { sideTabType, isPanelOpen, isSideNavOpen, userDetail } = this.state;
 
         return (
             <React.Fragment>
                 <Header aria-label="IBM Platform Name" className="header-style">
-                    <Menu16 className="menu-icon" />
+                    <Menu16 className="menu-icon" onClick={ this.menuClk } />
                     <HeaderName href="#" prefix="" className="header-text">
                         IBM COVID-19 Health Assistance
                     </HeaderName>
@@ -48,17 +72,23 @@ class SideMenu extends Component {
                         <HeaderGlobalAction className="header-right-user"
                             aria-label="Search" onClick={() => { this.rightPanelClk() }}>
                             <UserAvatar16 />
-                            <span className="header-right-text">Hi, Peter</span>
+                            <span className="header-right-text">{userDetail.name}</span>
                             <ChevronDown16 />
                         </HeaderGlobalAction>
                     </HeaderGlobalBar>
                     {isPanelOpen ? 
-                        <HeaderPanel expanded aria-label="Header Panel" className="header-panel" />
+                        <HeaderPanel expanded aria-label="Header Panel" className="header-panel">
+                            <Switcher aria-label="Switcher Container" className="menu-list">
+                                <SwitcherItem isSelected aria-label="Link 1" href="#" onClick={this.logoutClk}>
+                                    Logout
+                                </SwitcherItem>
+                            </Switcher>
+                        </HeaderPanel>
                     : null}
                 </Header>
                 <SideNav
                     isFixedNav
-                    expanded={true}
+                    expanded={isSideNavOpen}
                     isChildOfHeader={true}
                     aria-label="Side navigation"
                     className="sidenav-style">
@@ -73,7 +103,7 @@ class SideMenu extends Component {
                             <p className="text-color">Settings</p>
                         </SideNavLink>
                     </SideNavItems>
-                </SideNav>
+                </SideNav> 
             </React.Fragment>
         );
     }

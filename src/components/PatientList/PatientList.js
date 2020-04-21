@@ -207,7 +207,7 @@ class PatientList extends Component {
                           <Warning16 className="sos-icon" />
                         </div> : null 
                       }
-                      <span className="id-style">{value._id}</span>
+                      <span className="id-style">#{value._id}</span>
                     </div>
                   </Link>
                 )

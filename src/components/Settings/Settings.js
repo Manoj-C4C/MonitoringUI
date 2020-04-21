@@ -13,7 +13,7 @@ class Settings extends Component {
         <SideMenu history={this.props.history} />
         <Content className="content-block">
           <Tile className="tile-block">
-            <p>Settings Page</p>
+            <p>Coming soon...</p>
           </Tile>
         </Content>
       </React.Fragment>

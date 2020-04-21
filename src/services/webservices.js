@@ -1,4 +1,4 @@
-const BASE_URL = "http://a0782a3c.ngrok.io/";
+const BASE_URL = "http://4ebf3b9f.ngrok.io/";
 
 function getapi(endpoint) {
   const apiObj = {

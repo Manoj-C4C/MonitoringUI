@@ -8,14 +8,18 @@ import {
   Information20,
   CircleFilled20,
   ArrowRight20,
-  NotebookReference20
+  NotebookReference20,
+  PillsSubtract20,
+  Calendar20
 } from "@carbon/icons-react";
 import {
   TextArea,
   Loading,
   Modal,
   Dropdown,
-  Button
+  Button,
+  InlineNotification,
+  Tile
 } from "carbon-components-react";
 import { LineChart } from "@carbon/charts-react";
 import { getapi, postapi, putapi } from "../../services/webservices";
@@ -31,8 +35,10 @@ class PatientDetails extends React.Component {
       modal: false,
       patient: {},
       assigned: false,
+      isNotificationOpen: false,
       dataLoader: true,
       comment: "",
+      notificationText: '',
       doctorList: [],
       commentsList: [],
       data: [
@@ -133,7 +139,7 @@ class PatientDetails extends React.Component {
     const reqObj = {
       comment: this.state.comment,
       timestamp: new Date().getTime(),
-      doctor: this.props.id
+      doctor: this.state.userDetail.name
     };
     return postapi(endpoint, reqObj).then(responseJson => {
       if (responseJson.responseCode !== "ERROR") {
@@ -154,7 +160,7 @@ class PatientDetails extends React.Component {
   assign(val, event) {
     const endpoint = `patients/assign-doctor/${this.props.id}`;
     const reqObj = {
-      doctorId: val,
+      doctorId: val._id,
       operatorId: this.state.userDetail.id,
       timestamp: new Date().getTime(),
       operatorName: this.state.userDetail.name
@@ -162,7 +168,10 @@ class PatientDetails extends React.Component {
 
     return putapi(endpoint, reqObj).then(responseJson => {
       if (responseJson.responseCode !== "ERROR") {
-        this.setState({ assigned: true });
+        const { patient } = this.state;
+        patient.doctorId = val._id;
+        this.setState({ assigned: true, isNotificationOpen: true, patient: patient,
+          notificationText: `Dr. ${val.name} is assigned to ${patient.name}.` });
       }
     });
   }
@@ -174,79 +183,101 @@ class PatientDetails extends React.Component {
   close() {
     this.setState({ modal: false });
   }
+  notificationClose() {
+    this.setState({ isNotificationOpen: false });
+  }
+
   render() {
-    const { userType, doctorList } = this.state;
-    const items = [
-      {
-        id: "option-1",
-        text: userType === 1 ? "Operator" : "Doctor"
-      },
+    const { userType, doctorList, modal, isNotificationOpen } = this.state;
+    const items = userType === 1 ? [
       {
         id: "option-2",
-        text: "Hospital Administrator"
+        text: "Hospital Emergency"
       },
       {
         id: "option-3",
+        text: "Hospital Admission"
+      },
+      {
+        id: "option-4",
+        text: "Psychologist (Counseling)"
+      }
+    ] : [
+      {
+        id: "option-1",
+        text: "Doctor"
+      },
+      {
+        id: "option-2",
         text: "Hospital Emergency"
       },
       {
         id: "option-4",
-        text: "Other Departments"
+        text: "Psychologist (Counseling)"
       }
-    ];
-
+    ]
+    
     const props = () => ({
       active: true,
       withOverlay: false,
       small: false
     });
-    const { patient, dataLoader, comment, commentsList } = this.state;
+    const { patient, dataLoader, comment, commentsList, notificationText } = this.state;
     const modalprops = () => ({
       className: "some-class",
-      open: this.state.modal,
+      open: true,
       passiveModal: true,
-      modalHeading: "Select Doctor",
+      modalHeading: (isNotificationOpen ? <InlineNotification {...notificationProps()} /> : '' +"Select Doctor"),
       onRequestClose: this.close.bind(this)
     });
+    const notificationProps = () => ({
+      kind: 'success',
+      lowContrast: false,
+      title: `${notificationText}`,
+      hideCloseButton: false,
+      onCloseButtonClick: this.notificationClose.bind(this)
+    });
+
     return (
       <React.Fragment>
-        <Modal {...modalprops()}>
-          <div className="datatable">
-            {this.state.assigned ? "Assigned!" : null}
-            <div className="header">
-              <div className="unit">Doctor ID</div>
-              <div className="unit">Doctor name</div>
-              <div className="unit">Action</div>
-              <div className="clearfix"></div>
-            </div>
-            <div className="datarow">
-              {doctorList.length > 0 &&
-                doctorList.map((val, key) => {
-                  return (
-                    <div key={key} className="row">
-                      <div className="unit">{val._id}</div>
-                      <div className="unit">{val.name}</div>
-                      <div className="unit">
-                        {true ? (
-                          <Button
-                            onClick={this.assign.bind(this, val._id)}
-                            className="assignbtn"
-                          >
-                            Assign
-                          </Button>
-                        ) : (
-                          <Button className="assignbtn disable" disabled>
-                            Assign
-                          </Button>
-                        )}
+        {modal ? 
+          <Modal {...modalprops()}>
+            <div className="datatable">
+              <div className="header">
+                <div className="unit">Doctor ID</div>
+                <div className="unit">Doctor name</div>
+                <div className="unit">Action</div>
+                <div className="clearfix"></div>
+              </div>
+              <div className="datarow">
+                {doctorList.length > 0 &&
+                  doctorList.map((val, key) => {
+                    return (
+                      <div key={key} className="row">
+                        <div className="unit">{val._id}</div>
+                        <div className="unit">{val.name}</div>
+                        <div className="unit">
+                          {(patient.doctorId && patient.doctorId === val._id) ? (
+                            <Button className="assignbtn disable" disabled>
+                              Assign
+                            </Button>
+                          ) : (
+                            <Button
+                              onClick={this.assign.bind(this, val)}
+                              className="assignbtn"
+                            >
+                              Assign
+                            </Button>
+                          )}
+                        </div>
+                        <div className="clearfix"></div>
                       </div>
-                      <div className="clearfix"></div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+              </div>
             </div>
-          </div>
-        </Modal>
+          </Modal> : null
+        }
         {dataLoader ? (
           <div className="loader-style">
             <Loading {...props()} />
@@ -323,6 +354,33 @@ class PatientDetails extends React.Component {
                 <div className="detail">
                   <div className="charts">
                     <div className="head">Health Status</div>
+                    <Tile className="symptom-card">
+                      <div className="bx--row row-padding">
+                        <PillsSubtract20 />
+                        <span className="icon-label">Symptoms</span>
+                      </div>
+                      <div className="bx--row row-padding medicine-containers">
+                        <div className="text-container">
+                          <span className="text-label">Fever</span>
+                        </div>
+                        <div className="text-container">
+                          <span className="text-label">Sneezing & Dry Cough</span>
+                        </div>
+                        <div className="text-container">
+                          <span className="text-label">Breathing issues</span>
+                        </div>
+                      </div>
+                      <div className="bx--row row-padding">
+                        <Calendar20 />
+                        <span className="icon-label">
+                          Islolation/Quarantine Days
+                        </span>
+                      </div>
+                      <div className="bx--row row-padding">
+                        <span className="icon-label web-color">2 days Completed</span>
+                        <span className="icon-label">(12 days remaining)</span>
+                      </div>
+                    </Tile>
                     <div className="chart">
                       <div className="title">
                         <TemperatureHot20 />
@@ -374,30 +432,30 @@ class PatientDetails extends React.Component {
                             <div className="timedetail">
                               <div className="detail">{value.comment}</div>
                               <div className="time">
-                                {this.generateTimeFormat(value.timestamp)}
+                                By {value.doctor} {this.generateTimeFormat(value.timestamp)}
                               </div>
                             </div>
                           </div>
                         );
                       })}
                       {userType === 1 ? (
-                        <div className="entry">
-                          <div className="entrybox">
-                            <ArrowRight20
-                              onClick={() => {
-                                this.commentClk();
-                              }}
-                            />
-                            <TextArea
-                              className="textarea"
-                              labelText=""
-                              id="comment"
-                              value={comment}
-                              onChange={this.handleChange}
-                            />
+                          <div className="entry">
+                            <div className="entrybox">
+                              <ArrowRight20
+                                onClick={() => {
+                                  this.commentClk();
+                                }}
+                              />
+                              <TextArea
+                                className="textarea"
+                                labelText=""
+                                id="comment"
+                                value={comment}
+                                onChange={this.handleChange}
+                              />
+                            </div>
                           </div>
-                        </div>
-                      ) : null}
+                        ) : null}
                     </div>
                   </div>
                   <div className="clearfix"></div>
