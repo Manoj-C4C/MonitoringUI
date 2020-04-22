@@ -103,16 +103,15 @@ class PatientDetails extends React.Component {
     this.getDoctors();
     if (localStorage.getItem("user_details")) {
       const user_details = JSON.parse(localStorage.getItem("user_details"));
-      this.setState({ userType: user_details.usertype === "doctor" ? 1 : 2 });
-      this.setState({ userDetail: user_details });
+      this.setState({ userDetail: user_details, userType: user_details.usertype === "doctor" ? 1 : 2 });
     }
 
     const endpoint = `patients/${this.props.id}`;
     return getapi(endpoint).then(responseJson => {
-      this.setState({ dataLoader: false });
       if (responseJson.docs) {
         this.setState({ patient: responseJson.docs[0] });
       }
+      this.setState({ dataLoader: false });
     });
   }
 
@@ -185,6 +184,26 @@ class PatientDetails extends React.Component {
   }
   notificationClose() {
     this.setState({ isNotificationOpen: false });
+  }
+  getPatientSymptoms(value) {
+    let symptoms = [];
+    if(value.symptom) {
+      value.symptom.forEach((obj) => {
+        if(obj.family.toLowerCase() === 'myself') {
+          symptoms.push({name: obj.experience});
+        }
+      })
+    }
+    return symptoms;
+  }
+  checkQuarantineDays(value) {
+    let currentDate = moment(new Date().getTime());
+    let start = moment(value.qurantine.start);
+    let end = moment(value.qurantine.end);
+    return {
+      completed: currentDate.diff(start, 'days'), 
+      remaining: end.diff(currentDate, 'days')
+    };
   }
 
   render() {
@@ -294,11 +313,11 @@ class PatientDetails extends React.Component {
                   <div className="selection">
                     <Dropdown
                       items={items}
-                      id="dropdown-search"
+                      id="dropdown-assign"
                       name="dropdown"
                       label="Assign to"
                       onChange={this.selection.bind(this)}
-                      className="dropdown-search"
+                      className="dropdown-assign"
                       itemToString={item => (item ? item.text : "")}
                     />
                   </div>
@@ -338,11 +357,11 @@ class PatientDetails extends React.Component {
                     </div>
                     <div className="desc test">
                       <div className="desctitle">COVID-19 Status</div>
-                      <div className="descdetail">Positive, on 10 Apr 2020</div>
+                      <div className="descdetail text-transform">{patient.healthstatus}, on 10 Apr 2020</div>
                     </div>
                     <div className="desc travel">
                       <div className="desctitle">Other Disease</div>
-                      <div className="descdetail">Diabetes</div>
+                      <div className="descdetail text-transform">{patient.morbidity}</div>
                     </div>
                     <div className="desc">
                       <div className="desctitle">Location</div>
@@ -360,15 +379,11 @@ class PatientDetails extends React.Component {
                         <span className="icon-label">Symptoms</span>
                       </div>
                       <div className="bx--row row-padding medicine-containers">
-                        <div className="text-container">
-                          <span className="text-label">Fever</span>
-                        </div>
-                        <div className="text-container">
-                          <span className="text-label">Sneezing & Dry Cough</span>
-                        </div>
-                        <div className="text-container">
-                          <span className="text-label">Breathing issues</span>
-                        </div>
+                        {this.getPatientSymptoms(patient).map((val, indx) => {
+                          return(<div className="text-container" key={indx}>
+                            <span className="text-label">{val.name}</span>
+                          </div>)
+                        })}
                       </div>
                       <div className="bx--row row-padding">
                         <Calendar20 />
@@ -377,8 +392,13 @@ class PatientDetails extends React.Component {
                         </span>
                       </div>
                       <div className="bx--row row-padding">
-                        <span className="icon-label web-color">2 days Completed</span>
-                        <span className="icon-label">(12 days remaining)</span>
+                        {(patient.qurantine && patient.qurantine.isQurantine) ? 
+                          <div>
+                            <span className="icon-label web-color">{this.checkQuarantineDays(patient).completed} days Completed</span>
+                            <span className="icon-label">({this.checkQuarantineDays(patient).remaining} days remaining)</span>
+                          </div> : 
+                          <span className="icon-label">None</span>
+                        }
                       </div>
                     </Tile>
                     <div className="chart">
@@ -425,15 +445,17 @@ class PatientDetails extends React.Component {
                             className={`timeboxdetail ${
                               index !== commentsList.length - 1 ? "bdrl" : ""
                             }`}
-                          >
-                            <div className="timeicon">
-                              <CircleFilled20 />
-                            </div>
+                          > 
                             <div className="timedetail">
-                              <div className="detail">{value.comment}</div>
-                              <div className="time">
-                                By {value.doctor} {this.generateTimeFormat(value.timestamp)}
+                              <div className="timeicon">
+                                <CircleFilled20 />
                               </div>
+                              <div className="detail">
+                                {value.comment}
+                                <p className="time">
+                                  By {value.doctor} {this.generateTimeFormat(value.timestamp)}
+                                </p>
+                              </div>                              
                             </div>
                           </div>
                         );

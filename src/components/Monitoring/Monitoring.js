@@ -36,7 +36,7 @@ class Monitoring extends Component {
           <Tile className="tile-block">
             <p className="tabs-header">Patients Dashboard</p>
             <div className="alert_container">
-              <span className="alert_label">{sosCount} SOS</span>
+              <span className="alert_label">{sosCount} Morbidity</span>
             </div>
             <div className="possible_pat">
               <span className="possible_pat_label">{possibleCount}</span>
@@ -45,10 +45,10 @@ class Monitoring extends Component {
               <Tab id="tab-1" label="All Patients" className="tab-list" onClick={() => { this.tabClk('All') }}>
                 {tabType === 'All' ? <div className="some-content"><PatientList {...this.props} userStatus={tabType} getSosCount={this.handleSosCount} /></div> : null }
               </Tab>
-              <Tab id="tab-2" label="COVID-19 Positive" className="tab-list" onClick={() => { this.tabClk('Positive') }}>
+              <Tab id="tab-2" label="High Risk" className="tab-list" onClick={() => { this.tabClk('Positive') }}>
                 {tabType === 'Positive' ? <div className="some-content"><PatientList {...this.props} userStatus={tabType} getSosCount={this.handleSosCount} /></div> : null }
               </Tab>
-              <Tab id="tab-3" label="COVID-19 Possible" className="tab-list" onClick={() => { this.tabClk('Possible') }}>
+              <Tab id="tab-3" label="Medium Risk" className="tab-list" onClick={() => { this.tabClk('Possible') }}>
                 {tabType === 'Possible' ? <div className="some-content"><PatientList {...this.props} userStatus={tabType} getSosCount={this.handleSosCount} /></div> : null }
               </Tab>
             </Tabs>

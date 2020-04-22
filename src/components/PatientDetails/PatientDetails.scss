@@ -13,6 +13,9 @@
 .clearfix {
   clear: both;
 }
+.text-transform {
+  text-transform: capitalize;
+}
 
 .some-content {
   .bx--modal-header,
@@ -72,7 +75,7 @@
           float: right;
           margin-top: -7px;
           margin-left: 20px;
-          .dropdown-search {
+          .dropdown-assign {
             background-color: white;
             border: 2px solid #007d79;
             color: #007d79;
@@ -223,32 +226,35 @@
           }
           .timebox {
             padding: 17px;
+            max-height: 680px;
+            overflow-y: scroll;
             .bdrl {
               border-left: 1px dashed #007d79;
             }
             .timeboxdetail {
               .timeicon {
-                position: absolute;
-                margin: -3px 0px 0px -10px;
+                margin: -3px 0px 0px -34px;
                 svg {
-                  color: #007d79;
+                  fill: #007d79;
                 }
               }
               .timedetail {
-                padding: 0px 24px 22px;
+                padding: 0px 24px 0;
                 .detail {
                   padding: 0px 0px 6px;
                   font-weight: bold;
+                  top: -21px;
                 }
                 .time {
                   color: #565656;
+                  font-size: 14px;
                 }
               }
             }
             .entry {
               position: absolute;
               bottom: 43px;
-              width: 45%;
+              width: 42.5%;
               .entrybox {
                 svg {
                   z-index: 9;

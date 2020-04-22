@@ -66,18 +66,20 @@ class PatientList extends Component {
   }
 
   getLastUpdatedInfo(value) {
-    if(value.currentAssign === 'Operator') {
+    if(value.currentAssign.toLowerCase() === 'operator') {
       if(value.assignedByDoctor && value.assignedByDoctor.hasOwnProperty('name')) {
         return (value.assignedByDoctor.name+', '+this.generateTimeFormat(value.assignedByDoctor.timestamp));
       } else {
-        return ('Dummy user, '+this.generateTimeFormat(new Date().getTime()))
+        return (value.name+', '+this.generateTimeFormat(value.timestamp))
       }
-    } else {
+    } else if(value.currentAssign.toLowerCase() === 'doctor') {
       if(value.assignedByOperator && value.assignedByOperator.hasOwnProperty('name')) {
         return (value.assignedByOperator.name+', '+this.generateTimeFormat(value.assignedByOperator.timestamp));
       } else {
-        return ('Dummy user, '+this.generateTimeFormat(new Date().getTime()))
+        return (value.name+', '+this.generateTimeFormat(value.timestamp))
       }
+    } else {
+      return (value.name+', '+this.generateTimeFormat(value.timestamp))
     }
   }
 
@@ -86,9 +88,9 @@ class PatientList extends Component {
   }
 
   getTravelHistory(value) {
-    const indx = value.symptom.findIndex(x => x.family === 'myself');
-    if(indx === -1) return 'Dummy';
-    else return value.symptom[indx].experience;
+    if (value.symptom && value.symptom.length) {
+      return value.symptom[value.symptom.length-1].travelled;
+    } else return 'None';
   }
 
   render() {
@@ -99,10 +101,18 @@ class PatientList extends Component {
     const filterItems = [
       {
         id: 'option-1',
-        text: 'SOS',
+        text: 'Positive',
       },
       {
         id: 'option-2',
+        text: 'Possible',
+      },
+      {
+        id: 'option-3',
+        text: 'SOS',
+      },
+      {
+        id: 'option-4',
         text: 'Status',
       }
     ];
@@ -162,7 +172,7 @@ class PatientList extends Component {
                     <Tile className="doctor-card-view">
                       {value.morbidity !== 'none' ? 
                         <div className="alert_style">
-                          <span className="alert_label">1 SOS</span>
+                          <span className="alert_label">1 Morbidity</span>
                         </div> : null 
                       }
                       <div className="name_risk_style">
