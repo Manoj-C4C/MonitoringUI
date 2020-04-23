@@ -172,8 +172,10 @@ class PatientDetails extends React.Component {
       if (responseJson.responseCode !== "ERROR") {
         const { patient } = this.state;
         patient.doctorId = val._id;
-        this.setState({ assigned: true, isNotificationOpen: true, patient: patient,
-          notificationText: `Dr. ${val.name} is assigned to ${patient.name}.` });
+        this.setState({
+          assigned: true, isNotificationOpen: true, patient: patient,
+          notificationText: `Dr. ${val.name} is assigned to ${patient.name}.`
+        });
       }
     });
   }
@@ -190,10 +192,10 @@ class PatientDetails extends React.Component {
   }
   getPatientSymptoms(value) {
     let symptoms = [];
-    if(value.symptom) {
+    if (value.symptom) {
       value.symptom.forEach((obj) => {
-        if(obj.family.toLowerCase() === 'myself') {
-          symptoms.push({name: obj.experience});
+        if (obj.family.toLowerCase() === 'myself') {
+          symptoms.push({ name: obj.experience });
         }
       })
     }
@@ -204,7 +206,7 @@ class PatientDetails extends React.Component {
     let start = moment(value.qurantine.start);
     let end = moment(value.qurantine.end);
     return {
-      completed: currentDate.diff(start, 'days'), 
+      completed: currentDate.diff(start, 'days'),
       remaining: end.diff(currentDate, 'days')
     };
   }
@@ -229,20 +231,20 @@ class PatientDetails extends React.Component {
         text: "Psychologist (Counseling)"
       }
     ] : [
-      {
-        id: "option-1",
-        text: "Doctor"
-      },
-      {
-        id: "option-2",
-        text: "Hospital Emergency"
-      },
-      {
-        id: "option-4",
-        text: "Psychologist (Counseling)"
-      }
-    ]
-    
+        {
+          id: "option-1",
+          text: "Doctor"
+        },
+        {
+          id: "option-2",
+          text: "Hospital Emergency"
+        },
+        {
+          id: "option-4",
+          text: "Psychologist (Counseling)"
+        }
+      ]
+
     const props = () => ({
       active: true,
       withOverlay: false,
@@ -253,7 +255,7 @@ class PatientDetails extends React.Component {
       className: "some-class",
       open: true,
       passiveModal: true,
-      modalHeading: (isNotificationOpen ? <InlineNotification {...notificationProps()} /> : '' +"Select Doctor"),
+      modalHeading: (isNotificationOpen ? <InlineNotification {...notificationProps()} /> : '' + "Select Doctor"),
       onRequestClose: this.close.bind(this)
     });
     const notificationProps = () => ({
@@ -266,7 +268,7 @@ class PatientDetails extends React.Component {
 
     return (
       <React.Fragment>
-        {modal ? 
+        {modal ?
           <Modal {...modalprops()}>
             <div className="datatable">
               <div className="header">
@@ -288,13 +290,13 @@ class PatientDetails extends React.Component {
                               Assign
                             </Button>
                           ) : (
-                            <Button
-                              onClick={this.assign.bind(this, val)}
-                              className="assignbtn"
-                            >
-                              Assign
-                            </Button>
-                          )}
+                              <Button
+                                onClick={this.assign.bind(this, val)}
+                                className="assignbtn"
+                              >
+                                Assign
+                              </Button>
+                            )}
                         </div>
                         <div className="clearfix"></div>
                       </div>
@@ -309,194 +311,196 @@ class PatientDetails extends React.Component {
             <Loading {...props()} />
           </div>
         ) : (
-          <div className="some-content">
-            <div className="mainbox">
-              <div className="navigation">
-                <Link to="/dashboard">
-                  <ChevronLeft20 /> <span>Back</span>
-                </Link>
-                <div className="refer">
-                  <NotebookReference20 /> <span>Refer to another Hospital</span>
-                  <div className="selection">
-                    <Dropdown
-                      items={items}
-                      id="dropdown-assign"
-                      name="dropdown"
-                      label="Assign to"
-                      onChange={this.selection.bind(this)}
-                      className="dropdown-assign"
-                      itemToString={item => (item ? item.text : "")}
-                    />
+            <div className="some-content">
+              <div className="mainbox">
+                <div className="navigation">
+                  <Link to="/dashboard">
+                    <ChevronLeft20 /> <span>Back</span>
+                  </Link>
+                  <div className="refer">
+                    <NotebookReference20 /> <span>Refer to another Hospital</span>
+                    <div className="selection">
+                      <Dropdown
+                        items={items}
+                        id="dropdown-assign"
+                        name="dropdown"
+                        label="Assign to"
+                        onChange={this.selection.bind(this)}
+                        className="dropdown-assign"
+                        itemToString={item => (item ? item.text : "")}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="maincover">
-                {patient.qurantine && patient.qurantine.isQurantine ? (
-                  <div className="homeqstatus">Home Quarantine</div>
-                ) : null}
-                <div className="header">
-                  <div className="namenid">
-                    <div
-                      className={`name ${
-                        patient.healthstatus === "positive"
-                          ? "red-color"
-                          : patient.healthstatus === "possible"
-                          ? "yellow-color"
-                          : "green-color"
-                      }`}
-                    >
-                      {patient.name}
-                    </div>
-                    <div className="id">{patient._id}</div>
-                  </div>
-                  <div className="tabdesc">
-                    <div className="desc">
-                      <div className="desctitle">Gender</div>
-                      <div className="descdetail">{patient.gender}</div>
-                    </div>
-                    <div className="desc">
-                      <div className="desctitle">Age</div>
-                      <div className="descdetail">{patient.age} years</div>
-                    </div>
-                    <div className="desc travel">
-                      <div className="desctitle">Travel History</div>
-                      <div className="descdetail">Italy</div>
-                    </div>
-                    <div className="desc test">
-                      <div className="desctitle">COVID-19 Status</div>
-                      <div className="descdetail text-transform">{patient.healthstatus}, on 10 Apr 2020</div>
-                    </div>
-                    <div className="desc travel">
-                      <div className="desctitle">Other Disease</div>
-                      <div className="descdetail text-transform">{patient.morbidity}</div>
-                    </div>
-                    <div className="desc">
-                      <div className="desctitle">Location</div>
-                      <div className="descdetail">Roseville, CA</div>
-                    </div>
-                  </div>
-                  <div className="clearfix"></div>
-                </div>
-                <div className="detail">
-                  <div className="charts">
-                    <div className="head">Health Status</div>
-                    <Tile className="symptom-card">
-                      {userType === 1 ? 
-                        <div>
-                          <div className="bx--row row-padding head-margin">
-                            <User20 />
-                            <span className="icon-label">Risk</span>
-                          </div>   
-                          <div className="bx--row row-padding">
-                          <RadioButtonGroup
-                            defaultSelected="default-selected"
-                            legend="Group Legend"
-                            name= 'Risk levels' className="risk-group"
-                            valueSelected="high" onChange={this.changeRisk.bind(this)} >
-                            <RadioButton value="high" id="high" 
-                            labelText= "High" />
-                            <RadioButton
-                              value="medium"
-                              id="medium"
-                              labelText= "Medium"
-                            />
-                            <RadioButton value="low" id="low" 
-                            labelText= "Low" />
-                          </RadioButtonGroup>
-                          </div> 
-                        </div>
-                        : null
-                      }
-                      <div className="bx--row row-padding head-margin">
-                        <PillsSubtract20 />
-                        <span className="icon-label">Symptoms</span>
+                <div className="maincover">
+                  {patient.qurantine && patient.qurantine.isQurantine ? (
+                    <div className="homeqstatus">Home Quarantine</div>
+                  ) : null}
+                  <div className="header">
+                    <div className="namenid">
+                      <div
+                        className={`name ${
+                          patient.healthstatus === "positive"
+                            ? "red-color"
+                            : patient.healthstatus === "possible"
+                              ? "yellow-color"
+                              : "green-color"
+                          }`}
+                      >
+                        {patient.name}
                       </div>
-                      {this.getPatientSymptoms(patient).length ? 
-                        <div className="bx--row row-padding medicine-containers">
-                          {this.getPatientSymptoms(patient).map((val, indx) => {
-                            return(<div className="text-container" key={indx}>
-                              <span className="text-label">{val.name}</span>
-                            </div>)
-                          })}
-                        </div> : null
-                      }
-                      
-                      <div className="bx--row row-padding head-margin">
-                        <Calendar20 />
-                        <span className="icon-label">
-                          Islolation/Quarantine Days
-                        </span>
+                      <div className="id">{patient._id}</div>
+                      <br />
+                      <div> <span className="phn">Contact No.</span> {patient.mobileno}</div>
+                    </div>
+                    <div className="tabdesc">
+                      <div className="desc">
+                        <div className="desctitle">Gender</div>
+                        <div className="descdetail">{patient.gender}</div>
                       </div>
-                      <div className="bx--row row-padding">
-                        {(patient.qurantine && patient.qurantine.isQurantine) ? 
+                      <div className="desc">
+                        <div className="desctitle">Age</div>
+                        <div className="descdetail">{patient.age} years</div>
+                      </div>
+                      <div className="desc travel">
+                        <div className="desctitle">Travel History</div>
+                        <div className="descdetail">Italy</div>
+                      </div>
+                      <div className="desc test">
+                        <div className="desctitle">COVID-19 Status</div>
+                        <div className="descdetail text-transform">{patient.healthstatus}, on 10 Apr 2020</div>
+                      </div>
+                      <div className="desc travel">
+                        <div className="desctitle">Other Disease</div>
+                        <div className="descdetail text-transform">{patient.morbidity}</div>
+                      </div>
+                      <div className="desc">
+                        <div className="desctitle">Location</div>
+                        <div className="descdetail">Roseville, CA</div>
+                      </div>
+                    </div>
+                    <div className="clearfix"></div>
+                  </div>
+                  <div className="detail">
+                    <div className="charts">
+                      <div className="head">Health Status</div>
+                      <Tile className="symptom-card">
+                        {userType === 1 ?
                           <div>
-                            <span className="icon-label web-color">{this.checkQuarantineDays(patient).completed} days Completed</span>
-                            <span className="icon-label">({this.checkQuarantineDays(patient).remaining} days remaining)</span>
-                          </div> : 
-                          <span className="icon-label">None</span>
-                        }
-                      </div>
-                    </Tile>
-                    <div className="chart">
-                      <div className="title">
-                        <TemperatureHot20 />
-                        <span>
-                          Body Temprature in{" "}
-                          <span className="txtdegree">o</span>C
-                        </span>
-                      </div>
-                      <LineChart
-                        data={this.state.data}
-                        options={this.state.options}
-                      ></LineChart>
-                      <div className="bottom">
-                        <Information20 />
-                        <span>
-                          98<span className="txtdegree">o</span>C is normal
-                          temprature
-                        </span>
-                      </div>
-                    </div>
-                    <div className="chart">
-                      <div className="title">
-                        <Favorite20 /> <span>Heart Rate</span>
-                      </div>
-                      <LineChart
-                        data={this.state.data}
-                        options={this.state.options}
-                      ></LineChart>
-                      <div className="bottom">
-                        <Information20 />
-                        <span>Normal heart rate is between 70 and 100 Bpm</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="timeline">
-                    <div className="head">Patient History</div>
-                    <div className="timebox">
-                      {commentsList.map((value, index) => {
-                        return (
-                          <div
-                            key={index}
-                            className={`timeboxdetail ${
-                              index !== commentsList.length - 1 ? "bdrl" : ""
-                            }`}
-                          > 
-                            <div className="timedetail">
-                              <div className="timeicon">
-                                <CircleFilled20 />
-                              </div>
-                              <div className="detail">
-                                {value.comment}
-                                <p className="time">
-                                  By {value.doctor} {this.generateTimeFormat(value.timestamp)}
-                                </p>
-                              </div>                              
+                            <div className="bx--row row-padding head-margin">
+                              <User20 />
+                              <span className="icon-label">Risk</span>
+                            </div>
+                            <div className="bx--row row-padding">
+                              <RadioButtonGroup
+                                defaultSelected="default-selected"
+                                legend="Group Legend"
+                                name='Risk levels' className="risk-group"
+                                valueSelected="high" onChange={this.changeRisk.bind(this)} >
+                                <RadioButton value="high" id="high"
+                                  labelText="High" />
+                                <RadioButton
+                                  value="medium"
+                                  id="medium"
+                                  labelText="Medium"
+                                />
+                                <RadioButton value="low" id="low"
+                                  labelText="Low" />
+                              </RadioButtonGroup>
                             </div>
                           </div>
-                        );
-                      })}
-                      {userType === 1 ? (
+                          : null
+                        }
+                        <div className="bx--row row-padding head-margin">
+                          <PillsSubtract20 />
+                          <span className="icon-label">Symptoms</span>
+                        </div>
+                        {this.getPatientSymptoms(patient).length ?
+                          <div className="bx--row row-padding medicine-containers">
+                            {this.getPatientSymptoms(patient).map((val, indx) => {
+                              return (<div className="text-container" key={indx}>
+                                <span className="text-label">{val.name}</span>
+                              </div>)
+                            })}
+                          </div> : null
+                        }
+
+                        <div className="bx--row row-padding head-margin">
+                          <Calendar20 />
+                          <span className="icon-label">
+                            Islolation/Quarantine Days
+                        </span>
+                        </div>
+                        <div className="bx--row row-padding">
+                          {(patient.qurantine && patient.qurantine.isQurantine) ?
+                            <div>
+                              <span className="icon-label web-color">{this.checkQuarantineDays(patient).completed} days Completed</span>
+                              <span className="icon-label">({this.checkQuarantineDays(patient).remaining} days remaining)</span>
+                            </div> :
+                            <span className="icon-label">None</span>
+                          }
+                        </div>
+                      </Tile>
+                      <div className="chart">
+                        <div className="title">
+                          <TemperatureHot20 />
+                          <span>
+                            Body Temprature in{" "}
+                            <span className="txtdegree">o</span>C
+                        </span>
+                        </div>
+                        <LineChart
+                          data={this.state.data}
+                          options={this.state.options}
+                        ></LineChart>
+                        <div className="bottom">
+                          <Information20 />
+                          <span>
+                            98<span className="txtdegree">o</span>C is normal
+                          temprature
+                        </span>
+                        </div>
+                      </div>
+                      <div className="chart">
+                        <div className="title">
+                          <Favorite20 /> <span>Heart Rate</span>
+                        </div>
+                        <LineChart
+                          data={this.state.data}
+                          options={this.state.options}
+                        ></LineChart>
+                        <div className="bottom">
+                          <Information20 />
+                          <span>Normal heart rate is between 70 and 100 Bpm</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="timeline">
+                      <div className="head">Patient History</div>
+                      <div className="timebox">
+                        {commentsList.map((value, index) => {
+                          return (
+                            <div
+                              key={index}
+                              className={`timeboxdetail ${
+                                index !== commentsList.length - 1 ? "bdrl" : ""
+                                }`}
+                            >
+                              <div className="timedetail">
+                                <div className="timeicon">
+                                  <CircleFilled20 />
+                                </div>
+                                <div className="detail">
+                                  {value.comment}
+                                  <p className="time">
+                                    By {value.doctor} {this.generateTimeFormat(value.timestamp)}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                        {userType === 1 ? (
                           <div className="entry">
                             <div className="entrybox">
                               <ArrowRight20
@@ -514,14 +518,14 @@ class PatientDetails extends React.Component {
                             </div>
                           </div>
                         ) : null}
+                      </div>
                     </div>
+                    <div className="clearfix"></div>
                   </div>
-                  <div className="clearfix"></div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
       </React.Fragment>
     );
   }

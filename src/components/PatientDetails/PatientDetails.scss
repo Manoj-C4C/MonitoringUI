@@ -23,6 +23,11 @@
     padding: 1rem;
     margin-bottom: 0px;
   }
+  .some-class {
+    width:97%;
+    height:45%;
+    margin-top:42px;
+  }
   .datatable {
     .header {
       .unit {
@@ -120,6 +125,10 @@
             font-weight: bold;
           }
           .id {
+            font-size: 14px;
+            font-weight: bold;
+          }
+          .phn {
             font-size: 14px;
             font-weight: bold;
           }
