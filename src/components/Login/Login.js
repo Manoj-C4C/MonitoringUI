@@ -11,7 +11,7 @@ import {
 } from "carbon-components-react";
 import health_logo from '../../assets/images/health.svg';
 import { Content } from 'carbon-components-react/lib/components/UIShell';
-import { ArrowRight16, View16 } from '@carbon/icons-react';
+import { ArrowRight16, View16, ViewOff16 } from '@carbon/icons-react';
 import { postapi } from '../../services/webservices';
 
 class Login extends Component {
@@ -109,7 +109,10 @@ class Login extends Component {
                   value={password}
                   onChange={this.handleChange}
                 />
-                <View16 className="pwd-view" onClick={this.pwdView.bind(this)} />
+                {pwdType === 'password' ? 
+                  <ViewOff16 className="pwd-view" onClick={this.pwdView.bind(this)} /> : 
+                  <View16 className="pwd-view" onClick={this.pwdView.bind(this)} />
+                }
               </div>
 
               <Checkbox {...checkboxEvents} id="checkbox-1" />

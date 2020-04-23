@@ -350,8 +350,7 @@ class PatientDetails extends React.Component {
                         {patient.name}
                       </div>
                       <div className="id">{patient._id}</div>
-                      <br />
-                      <div> <span className="phn">Contact No.</span> {patient.mobileno}</div>
+                      <div className="id">Contact No. <span className="phn">{patient.mobileno}</span></div>
                     </div>
                     <div className="tabdesc">
                       <div className="desc">
@@ -415,15 +414,15 @@ class PatientDetails extends React.Component {
                           <PillsSubtract20 />
                           <span className="icon-label">Symptoms</span>
                         </div>
-                        {this.getPatientSymptoms(patient).length ?
-                          <div className="bx--row row-padding medicine-containers">
-                            {this.getPatientSymptoms(patient).map((val, indx) => {
-                              return (<div className="text-container" key={indx}>
+                        <div className="bx--row row-padding medicine-containers">
+                          { this.getPatientSymptoms(patient).length ? 
+                            this.getPatientSymptoms(patient).map((val, indx) => {
+                              return(<div className="text-container" key={indx}>
                                 <span className="text-label">{val.name}</span>
                               </div>)
-                            })}
-                          </div> : null
-                        }
+                            }) : <span className="icon-label">None</span> 
+                          }
+                        </div>
 
                         <div className="bx--row row-padding head-margin">
                           <Calendar20 />

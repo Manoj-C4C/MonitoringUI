@@ -121,21 +121,21 @@
           width: 25%;
           .name {
             padding-bottom: 9px;
-            font-size: 21px;
+            font-size: 20px;
             font-weight: bold;
           }
           .id {
-            font-size: 14px;
+            padding-bottom: 9px;
+            font-size: 13px;
             font-weight: bold;
           }
           .phn {
-            font-size: 14px;
-            font-weight: bold;
+            font-weight: 500;
           }
         }
         .tabdesc {
           float: right;
-          padding: 26px 0 26px 0;
+          padding: 35px 0 26px 0;
           width: 75%;
           .desc {
             float: left;
