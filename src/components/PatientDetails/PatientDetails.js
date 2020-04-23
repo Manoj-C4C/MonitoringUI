@@ -10,7 +10,8 @@ import {
   ArrowRight20,
   NotebookReference20,
   PillsSubtract20,
-  Calendar20
+  Calendar20,
+  User20
 } from "@carbon/icons-react";
 import {
   TextArea,
@@ -19,7 +20,9 @@ import {
   Dropdown,
   Button,
   InlineNotification,
-  Tile
+  Tile,
+  RadioButtonGroup,
+  RadioButton
 } from "carbon-components-react";
 import { LineChart } from "@carbon/charts-react";
 import { getapi, postapi, putapi } from "../../services/webservices";
@@ -206,6 +209,10 @@ class PatientDetails extends React.Component {
     };
   }
 
+  changeRisk() {
+    console.log('value changed');
+  }
+
   render() {
     const { userType, doctorList, modal, isNotificationOpen } = this.state;
     const items = userType === 1 ? [
@@ -374,18 +381,47 @@ class PatientDetails extends React.Component {
                   <div className="charts">
                     <div className="head">Health Status</div>
                     <Tile className="symptom-card">
-                      <div className="bx--row row-padding">
+                      {userType === 1 ? 
+                        <div>
+                          <div className="bx--row row-padding head-margin">
+                            <User20 />
+                            <span className="icon-label">Risk</span>
+                          </div>   
+                          <div className="bx--row row-padding">
+                          <RadioButtonGroup
+                            defaultSelected="default-selected"
+                            legend="Group Legend"
+                            name= 'Risk levels' className="risk-group"
+                            valueSelected="high" onChange={this.changeRisk.bind(this)} >
+                            <RadioButton value="high" id="high" 
+                            labelText= "High" />
+                            <RadioButton
+                              value="medium"
+                              id="medium"
+                              labelText= "Medium"
+                            />
+                            <RadioButton value="low" id="low" 
+                            labelText= "Low" />
+                          </RadioButtonGroup>
+                          </div> 
+                        </div>
+                        : null
+                      }
+                      <div className="bx--row row-padding head-margin">
                         <PillsSubtract20 />
                         <span className="icon-label">Symptoms</span>
                       </div>
-                      <div className="bx--row row-padding medicine-containers">
-                        {this.getPatientSymptoms(patient).map((val, indx) => {
-                          return(<div className="text-container" key={indx}>
-                            <span className="text-label">{val.name}</span>
-                          </div>)
-                        })}
-                      </div>
-                      <div className="bx--row row-padding">
+                      {this.getPatientSymptoms(patient).length ? 
+                        <div className="bx--row row-padding medicine-containers">
+                          {this.getPatientSymptoms(patient).map((val, indx) => {
+                            return(<div className="text-container" key={indx}>
+                              <span className="text-label">{val.name}</span>
+                            </div>)
+                          })}
+                        </div> : null
+                      }
+                      
+                      <div className="bx--row row-padding head-margin">
                         <Calendar20 />
                         <span className="icon-label">
                           Islolation/Quarantine Days

@@ -194,11 +194,25 @@
             margin-bottom: 20px;
             box-shadow: 2px 2px 1px -1px #8d8d8d;
 
+            .head-margin {
+              margin-bottom: -8px;
+              margin-top: 5px;
+            }
+
             .row-padding {
               padding: 0 0 15px 15px;
 
               .icon-label {
                 margin: 2px 0 0 6px;
+              }
+            }
+
+            .risk-group {
+              .bx--radio-button__appearance {
+                border-color: #007d79;
+              }
+              .bx--radio-button__appearance:before {
+                background-color: #007d79;
               }
             }
 
