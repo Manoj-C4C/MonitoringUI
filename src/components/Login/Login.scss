@@ -36,7 +36,29 @@
     } 
 
     .form-style {
-        margin-top: 10px;
+        margin-top: 30px;
+
+        .text-divider {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            margin: -16px 0;
+            background-color: rgba(0, 0, 0, 0.16);
+            height: 0.5px;
+        }
+
+        .text-divider-color {
+            background-color: #000000;
+        }
+
+        .rememberme {
+            display: inline-flex;
+
+            svg {
+                margin: 10px 5px;
+                fill: #393939;
+            }
+        }
 
         .button-div {
             position: absolute;
@@ -53,7 +75,7 @@
                 color: #007D79;
 
                 span {
-                    margin: -7px 0 0 5px;
+                    position: absolute;
                 }
             }
             .primary-div {
@@ -73,14 +95,13 @@
     
         .text-field-style {
             background-color: #fff;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.16);
+            border: none;
             padding: 0;
             margin-top: -10px;
             margin-bottom: 15px;
         }
 
         .text-field-style:focus {
-            border-bottom: 1px solid #000;
             outline: none;
         }
 

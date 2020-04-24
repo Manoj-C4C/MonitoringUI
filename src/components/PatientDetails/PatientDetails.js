@@ -22,7 +22,8 @@ import {
   InlineNotification,
   Tile,
   RadioButtonGroup,
-  RadioButton
+  RadioButton,
+  Toggle
 } from "carbon-components-react";
 import { LineChart } from "@carbon/charts-react";
 import { getapi, postapi, putapi } from "../../services/webservices";
@@ -215,6 +216,10 @@ class PatientDetails extends React.Component {
     console.log('value changed');
   }
 
+  changeQuarantine(event) {
+    console.log('quarantine changed => ',event)
+  }
+
   render() {
     const { userType, doctorList, modal, isNotificationOpen } = this.state;
     const items = userType === 1 ? [
@@ -264,6 +269,12 @@ class PatientDetails extends React.Component {
       title: `${notificationText}`,
       hideCloseButton: false,
       onCloseButtonClick: this.notificationClose.bind(this)
+    });
+    const toggleProps = () => ({
+      className: 'quarantine-toggle',
+      labelA: 'Off',
+      labelB: 'On',
+      onToggle: this.changeQuarantine.bind(this),
     });
 
     return (
@@ -395,7 +406,12 @@ class PatientDetails extends React.Component {
                                 defaultSelected="default-selected"
                                 legend="Group Legend"
                                 name='Risk levels' className="risk-group"
-                                valueSelected="high" onChange={this.changeRisk.bind(this)} >
+                                valueSelected={patient.healthstatus === "positive"
+                                ? "high"
+                                : patient.healthstatus === "possible"
+                                  ? "medium"
+                                  : "low"}
+                                onChange={this.changeRisk.bind(this)} >
                                 <RadioButton value="high" id="high"
                                   labelText="High" />
                                 <RadioButton
@@ -428,7 +444,12 @@ class PatientDetails extends React.Component {
                           <Calendar20 />
                           <span className="icon-label">
                             Islolation/Quarantine Days
-                        </span>
+                          </span>
+                          <Toggle
+                            defaultToggled={(patient.qurantine && patient.qurantine.isQurantine) ? patient.qurantine.isQurantine : false}
+                            {...toggleProps()}
+                            id="quarantine-toggle"
+                          />
                         </div>
                         <div className="bx--row row-padding">
                           {(patient.qurantine && patient.qurantine.isQurantine) ?
