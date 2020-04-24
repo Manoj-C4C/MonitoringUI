@@ -21,26 +21,72 @@
         }
 
         .header-div {
-            text-align: center;
             margin-top: 10px;
 
             .header {
                 color: #161616;
-                margin-top: 12px;
+                margin-top: 8px;
                 font-weight: 600;
             }
             .sub-header {
                 color: #393939;
-                line-height: 36px;
+                line-height: 25px;
             }
-        }
-        .divide-line {
-            background: #D3D3D3;
-            width: 90%;
         }
     } 
 
     .form-style {
+        margin-top: 30px;
+
+        .text-divider {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            margin: -16px 0;
+            background-color: rgba(0, 0, 0, 0.16);
+            height: 0.5px;
+        }
+
+        .text-divider-color {
+            background-color: #000000;
+        }
+
+        .rememberme {
+            display: inline-flex;
+
+            svg {
+                margin: 10px 5px;
+                fill: #393939;
+            }
+        }
+
+        .button-div {
+            position: absolute;
+            left: 0;
+            width: 100%;
+
+            .bx--btn {
+                width: 50%;
+                font-size: 12px;
+                height: 0;
+            }
+            .secondary-div {
+                background-color: #fff;
+                color: #007D79;
+
+                span {
+                    position: absolute;
+                }
+            }
+            .primary-div {
+                background-color: #007D79;
+            }
+            .login-arrow {
+                fill: #fff;
+                margin-right: -40px;
+            }
+        }
+
         label {
             color: #393939;
             font-size: 13px;
@@ -49,18 +95,25 @@
     
         .text-field-style {
             background-color: #fff;
-            border: 1px solid #E2E2E2;
-        }
-    
-        .signin-btn {
-            width: 100%;
-            margin-top: 10px;
-            background-color: #007D79;
+            border: none;
             padding: 0;
-    
-            span {
-                margin: auto;
-                text-align: center;
+            margin-top: -10px;
+            margin-bottom: 15px;
+        }
+
+        .text-field-style:focus {
+            outline: none;
+        }
+
+        .pwd-style {
+            position: relative;
+            display: flex;
+
+            .pwd-view {
+                position: absolute;
+                right: 0;
+                margin: 29px 10px;
+                cursor: pointer;
             }
         }
     }

@@ -11,6 +11,7 @@ import {
 } from "carbon-components-react";
 import health_logo from '../../assets/images/health.svg';
 import { Content } from 'carbon-components-react/lib/components/UIShell';
+import { ArrowRight16, View16, ViewOff16, Information16 } from '@carbon/icons-react';
 import { postapi } from '../../services/webservices';
 
 class Login extends Component {
@@ -20,6 +21,8 @@ class Login extends Component {
     this.state = {
       username: '',
       password: '',
+      pwdType: 'password',
+      focusTextField: '',
       dataLoader: false
     };
     this.handleChange = this.handleChange.bind(this);
@@ -28,6 +31,15 @@ class Login extends Component {
 
   handleChange(event) {
     this.setState({ [event.target.id]: event.target.value });
+  }
+
+  handleFocusBlur(type, event) {
+    if(type === 'focus') {
+      this.setState({ focusTextField: event.target.id });
+    } else if(type === 'blur') {
+      this.setState({ focusTextField: '' });
+    }
+    
   }
 
   signinBtn = (event) => {
@@ -53,8 +65,15 @@ class Login extends Component {
     })
   }
 
+  pwdView() {
+    this.setState({
+      pwdType: this.state.pwdType === 'password' ? 'text' : 'password'
+    })
+    
+  }
+
   render() {
-    const { username, password, dataLoader } = this.state;
+    const { username, password, dataLoader, pwdType, focusTextField } = this.state;
 
     const TextInputProps = {
       className: 'text-field-style',
@@ -65,11 +84,10 @@ class Login extends Component {
     const InvalidPasswordProps = {
       className: 'text-field-style',
       id: 'password',
-      labelText: 'Password'
+      labelText: 'Password',
     };
 
     const checkboxEvents = {
-      className: 'rememberme',
       labelText: 'Remember me',
     };
 
@@ -89,28 +107,50 @@ class Login extends Component {
               <p className="header">COVID-19 Health Assistance</p>
               <span className="sub-header">Please enter your details to monitor patient Health data</span>
             </div>            
-            <SwitcherDivider className="divide-line" />
             <Form className="form-style">
-              <TextInput {...TextInputProps} value={username} onChange={this.handleChange} />
+              <SwitcherDivider className="text-divider" />
+              <TextInput 
+              {...TextInputProps} 
+              value={username}
+              onFocus={this.handleFocusBlur.bind(this, 'focus')}
+              onBlur={this.handleFocusBlur.bind(this, 'blur')}
+              onChange={this.handleChange} />
+              <SwitcherDivider 
+              className={`text-divider ${focusTextField === 'username' ? 'text-divider-color' : ''}`} />
+              <div className="pwd-style">
+                <TextInput
+                  type={pwdType}
+                  required
+                  {...InvalidPasswordProps}
+                  value={password}
+                  onChange={this.handleChange}
+                  onFocus={this.handleFocusBlur.bind(this, 'focus')}
+                  onBlur={this.handleFocusBlur.bind(this, 'blur')}
+                />
+                {pwdType === 'password' ? 
+                  <ViewOff16 className="pwd-view" onClick={this.pwdView.bind(this)} /> : 
+                  <View16 className="pwd-view" onClick={this.pwdView.bind(this)} />
+                }
+              </div>
+              <SwitcherDivider 
+              className={`text-divider ${focusTextField === 'password' ? 'text-divider-color' : ''}`} />
 
-              <TextInput
-                type="password"
-                required
-                {...InvalidPasswordProps}
-                value={password}
-                onChange={this.handleChange}
-              />
+              <div className= "rememberme">
+                <Checkbox {...checkboxEvents} id="checkbox-1" />
+                <Information16 />  
+              </div>
 
-              <Checkbox {...checkboxEvents} id="checkbox-1" />
-
-              <div className="btn-div">
-                <Button type="submit" className="signin-btn" disabled={username === '' || password === ''} onClick={this.signinBtn}>
-                  <span>Sign In</span>
+              <div className="button-div">
+                <Button kind="secondary" className="secondary-div">
+                  <span>Forgot username or password?</span>
+                </Button>
+                <Button kind="primary" className="primary-div" type="submit" disabled={username === '' || password === ''} onClick={this.signinBtn}>
+                  Log In
+                  <ArrowRight16 className="login-arrow" />
                 </Button>
               </div>
             </Form>
           </Tile>
-          <p className="forgot_pwd">Forgot username or password?</p>
         </Content>
       </React.Fragment>
     );
