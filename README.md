@@ -1,68 +1,105 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Getting started
 
-## Available Scripts
+### Prerequisites
 
-In the project directory, you can run:
+Before starting the installation, ensure user have the IBM Cloud account to create Kubernetes Service. Also following tools have been installed on user local system. 
 
-### `npm start`
+- Node.js v10 or above
+```
+https://nodejs.org/en/
+```
+- Docker v19 or above
+```
+https://www.docker.com/products/docker-desktop
+```
+- IBM Cloud command line interface
+```
+https://cloud.ibm.com/docs/cli?topic=cloud-cli-install-ibmcloud-cli
+```
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### Installation
 
-### `npm test`
+#### Installing Patient Backend service:
+Below Steps will be used to create your own image repository, build the Docker image and finally deploy on the IBM Cloud Kubernetes cluster
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+##### step 1- Creating image repository on IBM Cloud 
 
-### `npm run build`
+Before building the Docker image, first you need to add a namespace to create your own image repository on IBM Cloud.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Below commands are using 'cfc_altran' as registry. Note that it needs to be unique.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+- Log in to IBM Cloud 
+```
+ibmcloud login
+```
+- Upon successful login, add a namespace to create your own image repository
+```
+ibmcloud cr namespace-add cfc_altran
+```
+- To ensure that your namespace is created, look for registry name in the command output 
+```
+ibmcloud cr namespace-list
+```
+##### Step 2- Creating Docker image
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+You have to run these command alongside Dockerfile.
 
-### `npm run eject`
+- Building new ubuntu image using Dockerfile to deploy CFC_API code on it
+```
+docker build -t cfc-nodejs-app .
+```
+- Tag docker image to upload to IBM Cloud Kubernetes cluster
+```
+docker tag cfc-nodejs-app us.icr.io/cfc_altran/cfc-nodejs-repo
+```
+- [_Optional step_] Try IBM Cloud Registry login to validate user and region 
+```
+ibmcloud cr login
+```
+- [_Optional step_] Update region to ensure that image is uploaded under correct region
+```
+ibmcloud cr region-set us-south
+```
+- Push docker image to IBM Cloud Registry
+```
+docker push us.icr.io/cfc_altran/cfc-nodejs-repo
+```
+- List image present on IBM Cloud Registry and ensure respective image is there in command output
+```
+ibmcloud cr image-list
+```
+##### Step 3- Kubernetes installation
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+__NOTE__: Below commands need to be executed manually on IBM Cloud via browser based 'Kubernetes Terminal'
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+`Go to Clusters on IBM Cloud -> click the cluster -> click 'Add-ons' -> click 'Install' for 'Kubernetes Terminal'`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+This will start installation and when button label change to 'Terminal', click on it to open terminal'
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+- [In case of redeployment] Delete the respective deployment & service if already exists
+```
+kubectl delete deployment cfcaltran2020
+kubectl delete service cfcaltran2020-service
+```
+- Start/Create the deployment
+```
+kubectl run cfcaltran2020 --image=us.icr.io/cfc_altran/cfc-nodejs-repo:latest
+```
+- Expose your application to the internet
+```
+kubectl expose deployment/cfcaltran2020 --type=NodePort --port=8080 --name=cfcaltran2020-service --target-port=8080
+```
+- Get the NodePort and use it for all requests. Application will listen on NodePort only and not on port specified while starting the NodeJS application.
+```
+kubectl describe service cfcaltran2020-service
+```
+- Get the Worker node Public IP on which request will be hit
+```
+ibmcloud ks workers cfc_nodejs_cluster
+```
+- Below is example GET API call
+```
+curl -kX GET https://<ip>:<port>/api/patient/<patientIP>
+```
+__NOTE__: The public url must be secure having HTTPS protocol.
