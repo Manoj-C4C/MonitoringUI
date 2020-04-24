@@ -16,7 +16,7 @@ https://nodejs.org/en/
 
 Go to /src/services/webservices.js file and update the BASE_URL with the generated URL of Monitor chatbot API.
 
-##### Step 2- Build using npm 
+#### Step 2- Build using npm 
 
 Open command window/terminal and run the following command
 ```
@@ -24,6 +24,6 @@ npm run build
 ```
 A build folder will be created in the root directory.
 
-##### Step 3- Deploy the build folder on IBM Cloud
+#### Step 3- Deploy the build folder on IBM Cloud
 
 TDB
