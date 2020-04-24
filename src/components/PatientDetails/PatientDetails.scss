@@ -16,6 +16,10 @@
 .text-transform {
   text-transform: capitalize;
 }
+.button-disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
 
 .some-content {
   .bx--modal-header,

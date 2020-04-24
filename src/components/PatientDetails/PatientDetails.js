@@ -36,6 +36,8 @@ class PatientDetails extends React.Component {
     this.state = {
       userType: 1,
       userDetail: {},
+      disableRiskContainer: false,
+      disableQuarantine: false,
       modal: false,
       patient: {},
       assigned: false,
@@ -212,16 +214,40 @@ class PatientDetails extends React.Component {
     };
   }
 
-  changeRisk() {
-    console.log('value changed');
+  changeRisk(event) {
+    this.setState({ disableRiskContainer: true });
+    const endpoint = `patients/assign-risk/${this.props.id}`;
+    const reqObj = {
+      "risk": event === 'high' ? 101 : (event === 'medium' ? 102 : 103)
+    };
+
+    return putapi(endpoint, reqObj).then(responseJson => {
+      this.setState({ disableRiskContainer: false });
+      if (responseJson.responseCode !== "ERROR") {
+        if(responseJson.ok) {
+          // Perform action
+        }
+      }
+    });
   }
 
   changeQuarantine(event) {
-    console.log('quarantine changed => ',event)
+    this.setState({ disableQuarantine: true });
+    const endpoint = `patients/assign-quarantine/${this.props.id}`;
+    const reqObj = {"isQuarantine": event};
+    
+    return putapi(endpoint, reqObj).then(responseJson => {
+      this.setState({ disableQuarantine: false });
+      if (responseJson.responseCode !== "ERROR") {
+        if(responseJson.ok) {
+          // Perform action
+        }
+      }
+    });
   }
 
   render() {
-    const { userType, doctorList, modal, isNotificationOpen } = this.state;
+    const { userType, doctorList, modal, isNotificationOpen, disableRiskContainer, disableQuarantine } = this.state;
     const items = userType === 1 ? [
       {
         id: "option-2",
@@ -271,7 +297,6 @@ class PatientDetails extends React.Component {
       onCloseButtonClick: this.notificationClose.bind(this)
     });
     const toggleProps = () => ({
-      className: 'quarantine-toggle',
       labelA: 'Off',
       labelB: 'On',
       onToggle: this.changeQuarantine.bind(this),
@@ -403,9 +428,9 @@ class PatientDetails extends React.Component {
                             </div>
                             <div className="bx--row row-padding">
                               <RadioButtonGroup
-                                defaultSelected="default-selected"
                                 legend="Group Legend"
-                                name='Risk levels' className="risk-group"
+                                name='Risk levels' 
+                                className={`risk-group ${disableRiskContainer ? 'button-disabled' : ''}`}
                                 valueSelected={patient.healthstatus === "positive"
                                 ? "high"
                                 : patient.healthstatus === "possible"
@@ -446,6 +471,7 @@ class PatientDetails extends React.Component {
                             Islolation/Quarantine Days
                           </span>
                           <Toggle
+                            className={`quarantine-toggle ${disableQuarantine ? 'button-disabled' : ''}`}
                             defaultToggled={(patient.qurantine && patient.qurantine.isQurantine) ? patient.qurantine.isQurantine : false}
                             {...toggleProps()}
                             id="quarantine-toggle"
