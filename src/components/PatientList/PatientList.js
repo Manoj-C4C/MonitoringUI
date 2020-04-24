@@ -62,11 +62,21 @@ class PatientList extends Component {
     };
   }
 
+  /**
+   * @method checkSOS
+   * @description Props to send to parent for sos count
+   */
   checkSOS = (possibleCount) => {
     const sosCount = this.state.patientsList.filter(value => (value.morbidity !== 'none' && value.healthstatus === 'positive')).length;
     this.props.getSosCount({sosCount, possibleCount});
   }
 
+
+  /**
+   * @method getLastUpdatedInfo
+   * @param value 
+   * @description Function to get last updated info from patient detail 
+   */
   getLastUpdatedInfo(value) {
     if(value.currentAssign.toLowerCase() === 'operator') {
       if(value.assignedByDoctor && value.assignedByDoctor.hasOwnProperty('name')) {
@@ -85,24 +95,46 @@ class PatientList extends Component {
     }
   }
 
+  /**
+   * 
+   * @param timestamp 
+   * @description Function to generate time format from timestamp
+   */
   generateTimeFormat(timestamp) {
     return moment(Number(timestamp)).format('h:mm a, DD MMM');
   }
 
+  /**
+   * @method getTravelHistory
+   * @param value 
+   * @description Function to get travel history from patient detail
+   */
   getTravelHistory(value) {
     if (value.symptom && value.symptom.length) {
       return value.symptom[value.symptom.length-1].travelled;
     } else return 'None';
   }
 
+  /**
+   * @method filterText
+   * @description Set variable when search text field value changes
+   */
   filterText(event) {
     this.setState({ [event.target.id]: event.target.value });
   }
 
+  /**
+   * @method filterSelect
+   * @description Set variable when dropdown value changes
+   */
   filterSelect(event) {
     this.setState({ filterDropdownValue: event.selectedItem.id });
   }
 
+  /**
+   * @method filterPatientList
+   * @description Filter patient list on text field change
+   */
   filterPatientList() {
     const { patientsList, userType, filterTextValue } = this.state;
     let filteredPatientsList = patientsList;
@@ -113,6 +145,11 @@ class PatientList extends Component {
     return this.filterByDropdown(filteredPatientsList);
   }
 
+  /**
+   * @method filterByDropdown
+   * @param list 
+   * @description Filter patient list on selected dropdown value
+   */
   filterByDropdown(list) {
     const { filterDropdownValue } = this.state;
     if(filterDropdownValue === 'morbidity') {
