@@ -16,6 +16,10 @@
 .text-transform {
   text-transform: capitalize;
 }
+.button-disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
 
 .some-content {
   .bx--modal-header,
@@ -205,6 +209,10 @@
 
             .quarantine-toggle {
               margin: -15px 0 0 20px;
+              
+              .bx--toggle-input:checked + .bx--toggle-input__label > .bx--toggle__switch::before {
+                background-color: #007d79;
+              }
             }
 
             .head-margin {
