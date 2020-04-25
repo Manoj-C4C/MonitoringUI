@@ -281,7 +281,9 @@ class PatientDetails extends React.Component {
       this.setState({ disableRiskContainer: false });
       if (responseJson.responseCode !== "ERROR") {
         if(responseJson.ok) {
-          // Perform action
+          let { patient } = this.state;
+          patient.healthstatus = event === 'high' ? 'positive' : (event === 'medium' ? 'possible' : 'none');
+          this.setState({ patient });
         }
       }
     });
@@ -301,7 +303,13 @@ class PatientDetails extends React.Component {
       this.setState({ disableQuarantine: false });
       if (responseJson.responseCode !== "ERROR") {
         if(responseJson.ok) {
-          // Perform action
+          let { patient } = this.state;
+          if(patient.qurantine) {
+            patient.qurantine.isQurantine = event;
+          } else {
+            patient.qurantine = { isQurantine: event };
+          }
+          this.setState({ patient });
         }
       }
     });
@@ -531,12 +539,14 @@ class PatientDetails extends React.Component {
                           <span className="icon-label">
                             Islolation/Quarantine Days
                           </span>
-                          <Toggle
-                            className={`quarantine-toggle ${disableQuarantine ? 'button-disabled' : ''}`}
-                            defaultToggled={(patient.qurantine && patient.qurantine.isQurantine) ? patient.qurantine.isQurantine : false}
-                            {...toggleProps()}
-                            id="quarantine-toggle"
-                          />
+                          {userType === 1 ?
+                            <Toggle
+                              className={`quarantine-toggle ${disableQuarantine ? 'button-disabled' : ''}`}
+                              defaultToggled={(patient.qurantine && patient.qurantine.isQurantine) ? patient.qurantine.isQurantine : false}
+                              {...toggleProps()}
+                              id="quarantine-toggle"
+                            /> : null 
+                          }
                         </div>
                         <div className="bx--row row-padding">
                           {(patient.qurantine && patient.qurantine.isQurantine) ?
