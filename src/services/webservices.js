@@ -1,7 +1,8 @@
 /**
  * @description Base url of API
  */
-const BASE_URL = "https://c4c-monitorapi.df.r.appspot.com/";
+//const BASE_URL = "https://c4c-monitorapi.df.r.appspot.com/";
+const BASE_URL = "https://590298a8.ngrok.io/";
 
 function getapi(endpoint) {
   const apiObj = {

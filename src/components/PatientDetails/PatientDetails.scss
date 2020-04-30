@@ -8,7 +8,7 @@
   color: #ff9300;
 }
 .web-color {
-  color: #007D79;
+  color: #007d79;
 }
 .clearfix {
   clear: both;
@@ -28,9 +28,9 @@
     margin-bottom: 0px;
   }
   .some-class {
-    width:97%;
-    height:45%;
-    margin-top:42px;
+    width: 97%;
+    height: 45%;
+    margin-top: 42px;
   }
   .datatable {
     .header {
@@ -180,7 +180,8 @@
           .chart {
             background: white;
             padding: 21px;
-            box-shadow: 2px 2px 1px -1px #8d8d8d;
+            // box-shadow: 2px 2px 1px -1px #8d8d8d;
+            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.16);
             margin-bottom: 20px;
             .bx--cc--legend {
               visibility: hidden;
@@ -205,12 +206,15 @@
           .symptom-card {
             background-color: #fff;
             margin-bottom: 20px;
-            box-shadow: 2px 2px 1px -1px #8d8d8d;
+            // box-shadow: 2px 2px 1px -1px #8d8d8d;
+            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.16);
 
             .quarantine-toggle {
               margin: -15px 0 0 20px;
-              
-              .bx--toggle-input:checked + .bx--toggle-input__label > .bx--toggle__switch::before {
+
+              .bx--toggle-input:checked
+                + .bx--toggle-input__label
+                > .bx--toggle__switch::before {
                 background-color: #007d79;
               }
             }
@@ -237,9 +241,9 @@
               }
             }
 
-            .medicine-containers {              
+            .medicine-containers {
               .text-container {
-                border: 1px solid #007D79;
+                border: 1px solid #007d79;
                 margin: 0px 8px 8px 0px;
                 border-radius: 30px;
                 height: 25px;

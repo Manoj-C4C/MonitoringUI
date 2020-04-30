@@ -1,63 +1,68 @@
 .bx--tabs__nav-item--selected {
-    #tab-1, #tab-2, #tab-3 {
-        border-bottom: 2px solid #007D79;
-    }
+  #tab-1,
+  #tab-2,
+  #tab-3 {
+    border-bottom: 2px solid #007d79;
+  }
 }
 .tab-list {
-    #tab-1:focus, #tab-2:focus, #tab-3:focus {
-        outline: none;
-    }
+  #tab-1:focus,
+  #tab-2:focus,
+  #tab-3:focus {
+    outline: none;
+  }
 }
 
 .content-block {
-    background-color: #F4F4F4;
+  background-color: #f4f4f4;
 
-    .tile-block {
-        background-color: #fff;
-        min-height: 500px;
+  .tile-block {
+    background-color: #fff;
+    min-height: 500px;
 
-        .tabs-header {
-            margin-left: 14px;
-            border-bottom: .1px solid;
-            line-height: 38px;
-            width: 94%;
-        }
-        .tabs-style {
-            margin: 13px 0 0 14px;            
-        }
-        .alert_container {
-            position: absolute;
-            border: 1px solid #DA1E28;
-            width: 70px;
-            color: #fff;
-            top: 60px;
-            left: 280px;
-            display: flex;
-            height: 20px;
-            font-weight: 600;
-            background-color: #DA1E28;
-            border-radius: 33px;
-        }
-        .alert_label {
-            font-size: 9px;
-            margin: 5px 0 0 6px;
-        }
-        .possible_pat {
-            position: absolute;
-            border: 1px solid #DA1E28;
-            width: 24px;
-            color: #fff;
-            top: 60px;
-            left: 476px;
-            display: flex;
-            height: 20px;
-            font-weight: 600;
-            background-color: #DA1E28;
-            border-radius: 15px;
-        }
-        .possible_pat_label{
-            font-size: 9px;
-            margin: 5px 0 0 6px;
-        }
+    .tabs-header {
+      margin-left: 14px;
+      border-bottom: 0.1px solid;
+      line-height: 38px;
+      width: 100%;
+      font-family: IBMPlexSans-Medium;
     }
+    .tabs-style {
+      margin: 13px 0 0 14px;
+    }
+    .alert_container {
+      position: absolute;
+      border: 1px solid #da1e28;
+      width: 70px;
+      color: #fff;
+      top: 60px;
+      left: 280px;
+      display: flex;
+      height: 20px;
+      font-weight: 600;
+      background-color: #da1e28;
+      border-radius: 33px;
+    }
+    .alert_label {
+      font-size: 10px;
+      margin: 5px 0 0 6px;
+    }
+    .possible_pat {
+      position: absolute;
+      border: 1px solid #da1e28;
+      width: 24px;
+      color: #fff;
+      top: 60px;
+      left: 476px;
+      display: flex;
+      height: 20px;
+      font-weight: 600;
+      background-color: #da1e28;
+      border-radius: 15px;
+    }
+    .possible_pat_label {
+      font-size: 9px;
+      margin: 5px 0 0 6px;
+    }
+  }
 }
