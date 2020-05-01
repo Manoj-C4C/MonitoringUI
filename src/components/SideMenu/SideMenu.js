@@ -12,6 +12,7 @@ import {
     Switcher,
     SwitcherItem
 } from 'carbon-components-react/lib/components/UIShell';
+import { ReactComponent as Help } from "../../assets/images/help.svg";
 import { Events32, HelpFilled32, Settings32, Menu16, UserAvatar16, ChevronDown16 } from '@carbon/icons-react';
 
 class SideMenu extends Component {
@@ -113,7 +114,7 @@ class SideMenu extends Component {
                         <SideNavLink renderIcon={Events32} onClick={() => { this.switchSideTab('dashboard') }} className={`list-style ${sideTabType === 'dashboard' || sideTabType === 'patientdetail' ? 'list-style_selected' : ''}`}>
                             <p className="text-color">Patients Dashboard</p>
                         </SideNavLink>
-                        <SideNavLink renderIcon={HelpFilled32} onClick={() => { this.switchSideTab('help') }} className={`list-style ${sideTabType === 'help' ? 'list-style_selected' : ''}`}>
+                        <SideNavLink renderIcon={Help} onClick={() => { this.switchSideTab('help') }} className={`list-style ${sideTabType === 'help' ? 'list-style_selected' : ''}`}>
                             <p className="text-color">Help Center</p>
                         </SideNavLink>
                         <SideNavLink renderIcon={Settings32} onClick={() => { this.switchSideTab('settings') }} className={`list-style ${sideTabType === 'settings' ? 'list-style_selected' : ''}`}>

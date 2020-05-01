@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+    <g transform="translate(-2 -2)">
+        <path d="M10 2a8 8 0 1 0 8 8 8 8 0 0 0-8-8zm0 14.857A6.857 6.857 0 1 1 16.857 10 6.857 6.857 0 0 1 10 16.857z" data-name="Path 8207"/>
+        <circle cx=".857" cy=".857" r=".857" data-name="Ellipse 1" transform="translate(9.143 13.429)"/>
+        <path d="M10.572 5.429h-.857A2.566 2.566 0 0 0 7.143 8v.286h1.143V8a1.429 1.429 0 0 1 1.429-1.429h.857a1.429 1.429 0 1 1 0 2.857H9.429v2.571h1.143v-1.427a2.571 2.571 0 1 0 0-5.143z" data-name="Path 8208"/>
+    </g>
+</svg>

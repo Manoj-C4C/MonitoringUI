@@ -22,14 +22,17 @@
 
     .tabs-header {
       margin-left: 14px;
-      border-bottom: 0.1px solid;
+      border-bottom: 0.1px solid #e0e0e0;
       line-height: 38px;
       width: 100%;
       font-family: IBMPlexSans-Medium;
     }
     .tabs-style {
       margin: 13px 0 0 14px;
+      width: 97%;
+    border-bottom: 1px solid #cbcbcb;
     }
+
     .alert_container {
       position: absolute;
       border: 1px solid #da1e28;

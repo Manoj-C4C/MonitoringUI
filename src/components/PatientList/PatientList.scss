@@ -71,6 +71,7 @@
 
 .patients_card_view_container {
   margin-top: 15px;
+  padding-left: 6px;
 
   .doctor-card-view{
       display: inline-block;
@@ -169,14 +170,84 @@
       }
   }
 }
+//*
+/* On screens that are 1581px or less, set the background color to blue */
+@media screen and (max-width: 1581px) {
+  .operator-card-view {
+    width: 13.5%;
+  }
+}
+
+/* On screens that are 1146px or less, set the background color to olive */
+@media screen and (max-width: 1146px) {
+  .operator-card-view {
+    width: 13.4%;
+  }
+}
+/* On screens that are 1146px or less, set the background color to olive */
+@media screen and (max-width: 1061px) {
+  .operator-card-view {
+    width: 13.3%;
+  }
+}
+/* On screens that are 992px or less, set the background color to olive */
+@media screen and (max-width: 992px) {
+  .operator-card-view {
+    width: 13%;
+  }
+}
+//*
 
 .search-filter-content {
   display: contents;
 }
 .search-filter-flex {
   display: inline-flex;
-  margin-left: 365px;
+margin-left: 49%;
 }
+/* On screens that are 992px or less, set the background color to olive */
+@media screen and (max-width: 1600px) {
+  .search-filter-flex {
+    margin-left: 48%;
+  }
+}
+/* On screens that are 992px or less, set the background color to olive */
+@media screen and (max-width: 1499px) {
+  .search-filter-flex {
+    margin-left: 47%;
+  }
+}
+/* On screens that are 992px or less, set the background color to olive */
+@media screen and (max-width: 1413px) {
+  .search-filter-flex {
+    margin-left: 44%;
+  }
+}
+/* On screens that are 992px or less, set the background color to olive */
+@media screen and (max-width: 1219px) {
+  .search-filter-flex {
+    margin-left: 41%;
+  }
+}
+/* On screens that are 992px or less, set the background color to olive */
+@media screen and (max-width: 1088px) {
+  .search-filter-flex {
+    margin-left: 38%;
+  }
+}
+/* On screens that are 992px or less, set the background color to olive */
+@media screen and (max-width: 992px) {
+  .search-filter-flex {
+    margin-left: 35%;
+  }
+}
+/* On screens that are 992px or less, set the background color to olive */
+@media screen and (max-width: 919px) {
+  .search-filter-flex {
+    margin-left: 31%;
+  }
+}
+//*
 .patient-count {
   min-width: 40%;
 }
