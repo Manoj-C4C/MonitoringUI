@@ -21,6 +21,8 @@ import {
   Button,
   InlineNotification,
   Tile,
+  Tabs,
+  Tab,
   RadioButtonGroup,
   RadioButton,
   Toggle
@@ -40,10 +42,12 @@ class PatientDetails extends React.Component {
       disableQuarantine: false,
       modal: false,
       patient: {},
+      tabType: "history",
       assigned: false,
       isNotificationOpen: false,
       dataLoader: true,
       comment: "",
+      chat: "",
       notificationText: '',
       doctorList: [],
       commentsList: [],
@@ -110,7 +114,10 @@ class PatientDetails extends React.Component {
     this.getDoctors();
     if (localStorage.getItem("user_details")) {
       const user_details = JSON.parse(localStorage.getItem("user_details"));
-      this.setState({ userDetail: user_details, userType: user_details.usertype === "doctor" ? 1 : 2 });
+      this.setState({ 
+        userDetail: user_details,
+         userType: user_details.usertype === "doctor" ? 1 : 2
+         });
     }
 
     const endpoint = `patients/${this.props.id}`;
@@ -134,6 +141,12 @@ class PatientDetails extends React.Component {
       }
     });
   }
+  tabClk(type) {
+    const tabChange = type === this.state.tabType ? false : true;
+    if (tabChange) {
+      this.setState({ tabType: type });
+    }
+  }
 
   /**
    * @method getCommentList
@@ -147,7 +160,9 @@ class PatientDetails extends React.Component {
       }
     });
   }
-
+  chatClk() {
+    //Code for chats
+  }
   /**
    * @method commentClk
    * @description Functionality when doctor comments
@@ -204,7 +219,9 @@ class PatientDetails extends React.Component {
         const { patient } = this.state;
         patient.doctorId = val._id;
         this.setState({
-          assigned: true, isNotificationOpen: true, patient: patient,
+          assigned: true, 
+          isNotificationOpen: true,
+           patient: patient,
           notificationText: `Dr. ${val.name} is assigned to ${patient.name}.`
         });
       }
@@ -245,7 +262,7 @@ class PatientDetails extends React.Component {
         if (obj.family.toLowerCase() === 'myself') {
           symptoms.push({ name: obj.experience });
         }
-      })
+      });
     }
     return symptoms;
   }
@@ -343,19 +360,27 @@ class PatientDetails extends React.Component {
           id: "option-4",
           text: "Psychologist (Counseling)"
         }
-      ]
+      ];
 
     const props = () => ({
       active: true,
       withOverlay: false,
       small: false
     });
-    const { patient, dataLoader, comment, commentsList, notificationText } = this.state;
+    const { patient,
+       dataLoader,
+        comment, 
+        chat,
+        commentsList, 
+        notificationText
+       } = this.state;
     const modalprops = () => ({
       className: "some-class",
       open: true,
       passiveModal: true,
-      modalHeading: (isNotificationOpen ? <InlineNotification {...notificationProps()} /> : '' + "Select Doctor"),
+      modalHeading: isNotificationOpen ? (
+      <InlineNotification {...notificationProps()} />
+       ) : ('' + "Select Doctor"),
       onRequestClose: this.close.bind(this)
     });
     const notificationProps = () => ({
@@ -593,50 +618,129 @@ class PatientDetails extends React.Component {
                       </div>
                     </div>
                     <div className="timeline">
-                      <div className="head">Patient History</div>
-                      <div className="timebox">
-                        {commentsList.map((value, index) => {
-                          return (
-                            <div
-                              key={index}
-                              className={`timeboxdetail ${
-                                index !== commentsList.length - 1 ? "bdrl" : ""
-                                }`}
-                            >
-                              <div className="timedetail">
-                                <div className="timeicon">
-                                  <CircleFilled20 />
+                    <Tabs className="tabs-style">
+                      <Tab
+                        id="tab-1"
+                        label="Patient History"
+                        className="tab-list head"
+                        onClick={() => {
+                          this.tabClk("history");
+                        }}
+                      >
+                        {this.state.tabType === "history" ? (
+                          <div className="some-content">
+                            <div className="timebox">
+                              {commentsList.map((value, index) => {
+                                return (
+                                  <div
+                                    key={index}
+                                    className={`timeboxdetail ${
+                                      index !== commentsList.length - 1
+                                        ? "bdrl"
+                                        : ""
+                                    }`}
+                                  >
+                                    <div className="timedetail">
+                                      <div className="timeicon">
+                                        <CircleFilled20 />
+                                      </div>
+                                      <div className="detail">
+                                        {value.comment}
+                                        <p className="time">
+                                          By {value.doctor}{" "}
+                                          {this.generateTimeFormat(
+                                            value.timestamp
+                                          )}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                              {userType === 1 ? (
+                                <div className="entry">
+                                  <div className="entrybox">
+                                    <ArrowRight20
+                                      onClick={() => {
+                                        this.commentClk();
+                                      }}
+                                    />
+                                    <TextArea
+                                      className="textarea"
+                                      labelText=""
+                                      id="comment"
+                                      value={comment}
+                                      onChange={this.handleChange}
+                                    />
+                                  </div>
                                 </div>
-                                <div className="detail">
-                                  {value.comment}
-                                  <p className="time">
-                                    By {value.doctor} {this.generateTimeFormat(value.timestamp)}
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        })}
-                        {userType === 1 ? (
-                          <div className="entry">
-                            <div className="entrybox">
-                              <ArrowRight20
-                                onClick={() => {
-                                  this.commentClk();
-                                }}
-                              />
-                              <TextArea
-                                className="textarea"
-                                labelText=""
-                                id="comment"
-                                value={comment}
-                                onChange={this.handleChange}
-                              />
+                              ) : null}
                             </div>
                           </div>
                         ) : null}
-                      </div>
-                    </div>
+                      </Tab>
+                      <Tab
+                        id="tab-2"
+                        label="Advice to Patient"
+                        className="tab-list"
+                        onClick={() => {
+                          this.tabClk("advise");
+                        }}
+                      >
+                        {this.state.tabType === "advise" ? (
+                          <div className="some-content">
+                            <div className="chat">
+                              <div className="infobox">
+                                <Information20 />
+                                <span>
+                                  This advice will send directly to Maria
+                                </span>
+                              </div>
+                              <div className="chats">
+                                <div className="chatbox rt">
+                                  <div>
+                                    You have symptoms of COVID-19, stay at home
+                                    qurantine for 14 days and capture your daily
+                                    temprature and heart rate.
+                                  </div>
+                                  <div className="time">
+                                    11:15am, 20 Apr 2020
+                                  </div>
+                                </div>
+                                <div className="chatbox lt">
+                                  <div>
+                                    Thank you, Doctor. can you please suggest,
+                                    what else should i do ?
+                                  </div>
+                                  <div className="time">
+                                    Sent by {patient.name} | 11:15am, 20 Apr
+                                    2020
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="entry">
+                              <div className="entrybox">
+                                <ArrowRight20
+                                  onClick={() => {
+                                    this.chatClk();
+                                  }}
+                                />
+                                <TextArea
+                                  className="textarea"
+                                  labelText=""
+                                  id="chat"
+                                  placeholder="Type somthing..."
+                                  value={chat}
+                                  onChange={this.handleChange}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        ) : null}
+                      </Tab>
+                    </Tabs>
+                  </div>
                     <div className="clearfix"></div>
                   </div>
                 </div>

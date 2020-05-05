@@ -282,43 +282,12 @@
         .timeline {
           width: 47%;
           float: left;
-          .head {
-            font-weight: bold;
-            padding-bottom: 8px;
-          }
-          .timebox {
-            padding: 17px;
-            max-height: 680px;
-            overflow-y: scroll;
-            .bdrl {
-              border-left: 1px dashed #007d79;
-            }
-            .timeboxdetail {
-              .timeicon {
-                margin: -3px 0px 0px -34px;
-                svg {
-                  fill: #007d79;
-                }
-              }
-              .timedetail {
-                padding: 0px 24px 0;
-                .detail {
-                  padding: 0px 0px 6px;
-                  font-weight: bold;
-                  top: -21px;
-                }
-                .time {
-                  color: #565656;
-                  font-size: 14px;
-                }
-              }
-            }
+          .bx--tab-content {
             .entry {
-              margin-top: 40px;
-              margin-left: -6px;
-              margin-right: -16px;
+              position: absolute;
+              bottom: 43px;
+              width: 42.5%;
               .entrybox {
-                position: relative;
                 svg {
                   z-index: 9;
                   position: absolute;
@@ -334,10 +303,130 @@
                 }
               }
             }
+          .head {
+            font-weight: bold;
+            padding-bottom: 8px;
           }
+          .some-content {
+            .chat {
+              .infobox {
+                float: right;
+                margin-top: -4px;
+                color: #8d8d8d;
+                svg {
+                  fill: #8d8d8d;
+                }
+                span {
+                  margin-left: 4px;
+                  vertical-align: 5px;
+                }
+              }
+              .chats {
+                .chatbox {
+                  padding: 16px;
+                  box-shadow: 1px 1px 1px 0.5px #d0d0d0;
+                  clear: both;
+                  margin: 8px 0px 22px 0px;
+                  line-height: 18px;
+                  width: 70%;
+                  .time {
+                    color: #8d8d8d;
+                    text-align: right;
+                    padding-top: 14px;
+                    font-size: 12px;
+                  }
+                }
+                .rt {
+                  float: right;
+                  background-color: #ffffff;
+                }
+                .lt {
+                  float: left;
+                  background-color: #e0faf9;
+                }
+              }
+            }
+            .timebox {
+              padding: 17px;
+              max-height: 680px;
+              overflow-y: scroll;
+              .bdrl {
+                border-left: 1px dashed #007d79;
+              }
+              .timeboxdetail {
+                .timeicon {
+                  margin: -3px 0px 0px -34px;
+                  svg {
+                    fill: #007d79;
+                  }
+                }
+                .timedetail {
+                  padding: 0px 24px 0;
+                  .detail {
+                    padding: 0px 0px 6px;
+                    font-weight: bold;
+                    top: -21px;
+                  }
+                  .time {
+                    color: #565656;
+                    font-size: 14px;
+                  }
+                }
+              }
+            }
+          }
+          // .timebox {
+          //   padding: 17px;
+          //   max-height: 680px;
+          //   overflow-y: scroll;
+          //   .bdrl {
+          //     border-left: 1px dashed #007d79;
+          //   }
+          //   .timeboxdetail {
+          //     .timeicon {
+          //       margin: -3px 0px 0px -34px;
+          //       svg {
+          //         fill: #007d79;
+          //       }
+          //     }
+          //     .timedetail {
+          //       padding: 0px 24px 0;
+          //       .detail {
+          //         padding: 0px 0px 6px;
+          //         font-weight: bold;
+          //         top: -21px;
+          //       }
+          //       .time {
+          //         color: #565656;
+          //         font-size: 14px;
+          //       }
+          //     }
+          //   }
+          //   .entry {
+          //     margin-top: 40px;
+          //     margin-left: -6px;
+          //     margin-right: -16px;
+          //     .entrybox {
+          //       position: relative;
+          //       svg {
+          //         z-index: 9;
+          //         position: absolute;
+          //         right: 0px;
+          //         margin: 13px 12px 0px;
+          //         cursor: pointer;
+          //       }
+          //       .textarea {
+          //         background-color: white;
+          //         resize: none;
+          //         border: 1px solid #8d8d8d;
+          //         height: 45px;
+          //       }
+          //     }
+          //   }
+          // }
         }
       }
     }
   }
 }
-
+}
