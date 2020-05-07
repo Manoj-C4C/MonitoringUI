@@ -3,7 +3,7 @@
  */
 
 //const BASE_URL = "https://c4c-monitorapi.df.r.appspot.com/";
-const BASE_URL = "https://de2242ca.ngrok.io/";
+const BASE_URL = "https://0ef13b40.ngrok.io/";
 
 function getapi(endpoint) {
   const apiObj = {

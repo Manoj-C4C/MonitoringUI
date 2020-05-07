@@ -1,6 +1,7 @@
 import React from "react";
 import moment from "moment";
 import "./PatientDetails.scss";
+import {connect} from 'react-redux';
 import {
   ChevronLeft20,
   TemperatureHot20,
@@ -16,10 +17,7 @@ import {
 import {
   TextArea,
   Loading,
-  Modal,
   Dropdown,
-  Button,
-  InlineNotification,
   Tile,
   Tabs,
   Tab,
@@ -29,8 +27,21 @@ import {
 } from "carbon-components-react";
 import { LineChart } from "@carbon/charts-react";
 import { getapi, postapi, putapi } from "../../services/webservices";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import "@carbon/charts/styles.css";
+import setCommentList from '../../redux/patientDetail/patientDetailActionCreator.js';
+
+const mapStateToProps = (state) =>{
+  return {
+    commentsList: state.patientDetail.commentsList
+  }
+}
+
+const mapDispatchToProps = (dispatch) =>{
+  return {
+    setcommentList: (list)=>dispatch(setCommentList(list))
+  }
+}
 
 class PatientDetails extends React.Component {
   constructor(props) {
@@ -48,9 +59,6 @@ class PatientDetails extends React.Component {
       dataLoader: true,
       comment: "",
       chat: "",
-      notificationText: "",
-      doctorList: [],
-      commentsList: [],
       data: [
         {
           group: "Dataset 1",
@@ -111,7 +119,6 @@ class PatientDetails extends React.Component {
 
   componentDidMount() {
     this.getCommentList();
-    //this.getDoctors();
     if (localStorage.getItem("user_details")) {
       const user_details = JSON.parse(localStorage.getItem("user_details"));
       this.setState({
@@ -129,18 +136,6 @@ class PatientDetails extends React.Component {
     });
   }
 
-  /**
-   * @method getDoctors
-   * @description API implementation to get the doctors list
-   */
-  getDoctors() {
-    const endpoint = `doctors`;
-    return getapi(endpoint).then(responseJson => {
-      if (responseJson.responseCode !== "ERROR") {
-        this.setState({ doctorList: responseJson.docs });
-      }
-    });
-  }
   tabClk(type) {
     const tabChange = type === this.state.tabType ? false : true;
     if (tabChange) {
@@ -156,7 +151,7 @@ class PatientDetails extends React.Component {
     const endpoint = `patients/comment/${this.props.id}`;
     return getapi(endpoint).then(responseJson => {
       if (responseJson.responseCode !== "ERROR") {
-        this.setState({ commentsList: responseJson.docs[0].doctorscreening });
+        this.props.setcommentList(responseJson.docs[0].doctorscreening)
       }
     });
   }
@@ -317,9 +312,6 @@ class PatientDetails extends React.Component {
   render() {
     const {
       userType,
-      doctorList,
-      modal,
-      isNotificationOpen,
       disableRiskContainer,
       disableQuarantine
     } = this.state;
@@ -363,9 +355,7 @@ class PatientDetails extends React.Component {
       patient,
       dataLoader,
       comment,
-      chat,
-      commentsList,
-      notificationText
+      chat
     } = this.state;
 
     const toggleProps = () => ({
@@ -604,12 +594,12 @@ class PatientDetails extends React.Component {
                         {this.state.tabType === "history" ? (
                           <div className="some-content">
                             <div className="timebox">
-                              {commentsList.map((value, index) => {
+                              {this.props.commentsList.map((value, index) => {
                                 return (
                                   <div
                                     key={index}
                                     className={`timeboxdetail ${
-                                      index !== commentsList.length - 1
+                                      index !== this.props.commentsList.length - 1
                                         ? "bdrl"
                                         : ""
                                     }`}
@@ -726,4 +716,4 @@ class PatientDetails extends React.Component {
   }
 }
 
-export default PatientDetails;
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(PatientDetails));
