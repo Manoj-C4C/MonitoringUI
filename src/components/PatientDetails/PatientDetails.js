@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 import "./PatientDetails.scss";
-import {connect} from 'react-redux';
+import { connect } from "react-redux";
 import {
   ChevronLeft20,
   TemperatureHot20,
@@ -29,19 +29,19 @@ import { LineChart } from "@carbon/charts-react";
 import { getapi, postapi, putapi } from "../../services/webservices";
 import { Link, withRouter } from "react-router-dom";
 import "@carbon/charts/styles.css";
-import setCommentList from '../../redux/patientDetail/patientDetailActionCreator.js';
+import setCommentList from "../../redux/patientDetail/patientDetailActionCreator.js";
 
-const mapStateToProps = (state) =>{
+const mapStateToProps = state => {
   return {
     commentsList: state.patientDetail.commentsList
-  }
-}
+  };
+};
 
-const mapDispatchToProps = (dispatch) =>{
+const mapDispatchToProps = dispatch => {
   return {
-    setcommentList: (list)=>dispatch(setCommentList(list))
-  }
-}
+    setcommentList: list => dispatch(setCommentList(list))
+  };
+};
 
 class PatientDetails extends React.Component {
   constructor(props) {
@@ -59,43 +59,7 @@ class PatientDetails extends React.Component {
       dataLoader: true,
       comment: "",
       chat: "",
-      data: [
-        {
-          group: "Dataset 1",
-          date: "2020-04-01T18:30:00.000Z",
-          value: 96
-        },
-        {
-          group: "Dataset 1",
-          date: "2020-04-02T18:30:00.000Z",
-          value: 95
-        },
-        {
-          group: "Dataset 1",
-          date: "2020-04-03T18:30:00.000Z",
-          value: 98
-        },
-        {
-          group: "Dataset 1",
-          date: "2020-04-04T18:30:00.000Z",
-          value: 99
-        },
-        {
-          group: "Dataset 1",
-          date: "2020-04-05T18:30:00.000Z",
-          value: 100
-        },
-        {
-          group: "Dataset 1",
-          date: "2020-04-06T18:30:00.000Z",
-          value: 102
-        },
-        {
-          group: "Dataset 1",
-          date: "2020-04-07T18:30:00.000Z",
-          value: 105
-        }
-      ],
+      data: [],
       options: {
         title: "",
         axes: {
@@ -111,7 +75,7 @@ class PatientDetails extends React.Component {
           }
         },
         curve: "curveMonotoneX",
-        height: "177px"
+        height: "227px"
       }
     };
     this.handleChange = this.handleChange.bind(this);
@@ -151,7 +115,7 @@ class PatientDetails extends React.Component {
     const endpoint = `patients/comment/${this.props.id}`;
     return getapi(endpoint).then(responseJson => {
       if (responseJson.responseCode !== "ERROR") {
-        this.props.setcommentList(responseJson.docs[0].doctorscreening)
+        this.props.setcommentList(responseJson.docs[0].doctorscreening);
       }
     });
   }
@@ -308,13 +272,65 @@ class PatientDetails extends React.Component {
       }
     });
   }
+  getTemperature = string => {
+    let value;
+    switch (string.toLowerCase(string)) {
+      case "normal":
+      case "fine":
+      case "correct":
+      case "no fever":
+      case "normal":
+        value = 97.3;
+        break;
+      case "medium":
+      case "mediumsized":
+        value = 99.1;
+        break;
+      case "high":
+      case "high fever":
+      case "feeling low":
+      case "little bit":
+      case "a little":
+      case "yeah":
+        value = 100.8;
+        break;
+      case "very high":
+      case "very high fever":
+      case "too much":
+      case "feeling sick":
+        value = 103.55;
+        break;
+      default:
+        value = parseFloat(string);
+    }
+    return value;
+  };
+  getHeartRate = string => {
+    let value;
+    switch (string.toLowerCase(string)) {
+      case "low":
+        value = 64.5;
+        break;
+      case "normal":
+        value = 74.5;
+        break;
+      case "medium":
+        value = 82.5;
+        break;
+      case "high":
+        value = 74.5;
+        break;
+      case "very high":
+        value = 106;
+        break;
+      default:
+        value = parseFloat(string);
+    }
+    return value;
+  };
 
   render() {
-    const {
-      userType,
-      disableRiskContainer,
-      disableQuarantine
-    } = this.state;
+    const { userType, disableRiskContainer, disableQuarantine } = this.state;
     const items =
       userType === 1
         ? [
@@ -351,13 +367,42 @@ class PatientDetails extends React.Component {
       withOverlay: false,
       small: false
     });
-    const {
-      patient,
-      dataLoader,
-      comment,
-      chat
-    } = this.state;
+    const { patient, dataLoader, comment, chat } = this.state;
+    //----- CALCULATE LINE CHART DATA -----//
+    let bodyTempGraphData = [];
+    let heartRateGraphData = [];
 
+    let bodyTempData = [];
+    let heartRateData = [];
+    if (patient && patient.symptom && patient.symptom.length) {
+      patient.symptom.forEach((item, i) => {
+        let temp = this.getTemperature(item.temperature);
+        if (temp < 95) temp = 95;
+        if (temp > 105) temp = 105;
+
+        let heartRate = this.getHeartRate(item.heart_rate);
+        if (heartRate < 60) heartRate = 60;
+        if (heartRate > 114) heartRate = 114;
+        let tempData = {
+          group: "",
+          date: item.timestamp,
+          value: temp
+        };
+        bodyTempData.push(tempData);
+        bodyTempGraphData.push(tempData);
+        let rateData = {
+          group: "",
+          date: item.timestamp,
+          value: heartRate
+        };
+        heartRateData.push(rateData);
+        heartRateGraphData.push(rateData);
+      });
+    } else {
+      // Making yAxis fixed, if no symptoms is available
+      bodyTempData = [95, 100, 105, 108];
+      heartRateData = [60, 90, 120, 140, 160];
+    }
     const toggleProps = () => ({
       labelA: "Off",
       labelB: "On",
@@ -556,7 +601,11 @@ class PatientDetails extends React.Component {
                         </span>
                       </div>
                       <LineChart
-                        data={this.state.data}
+                        data={
+                          bodyTempGraphData
+                            ? bodyTempGraphData
+                            : this.state.data
+                        }
                         options={this.state.options}
                       ></LineChart>
                       <div className="bottom">
@@ -572,7 +621,7 @@ class PatientDetails extends React.Component {
                         <Favorite20 /> <span>Heart Rate</span>
                       </div>
                       <LineChart
-                        data={this.state.data}
+                        data={heartRateData ? heartRateData : this.state.data}
                         options={this.state.options}
                       ></LineChart>
                       <div className="bottom">
@@ -599,7 +648,8 @@ class PatientDetails extends React.Component {
                                   <div
                                     key={index}
                                     className={`timeboxdetail ${
-                                      index !== this.props.commentsList.length - 1
+                                      index !==
+                                      this.props.commentsList.length - 1
                                         ? "bdrl"
                                         : ""
                                     }`}
@@ -716,4 +766,6 @@ class PatientDetails extends React.Component {
   }
 }
 
-export default withRouter(connect(mapStateToProps,mapDispatchToProps)(PatientDetails));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(PatientDetails)
+);
