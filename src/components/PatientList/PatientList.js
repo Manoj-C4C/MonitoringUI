@@ -61,7 +61,7 @@ class PatientList extends Component {
         }
     })
   }
-
+  
   searchBtnClick = () => {
     this.setState({ isSearchBoxOpen: true });
   };

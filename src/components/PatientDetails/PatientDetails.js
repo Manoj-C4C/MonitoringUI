@@ -30,6 +30,8 @@ import { getapi, postapi, putapi } from "../../services/webservices";
 import { Link, withRouter } from "react-router-dom";
 import "@carbon/charts/styles.css";
 import setCommentList from "../../redux/patientDetail/patientDetailActionCreator.js";
+import { EventRegister } from 'react-event-listeners';
+import WebSocketService from '../../services/webSocket.js';
 
 const mapStateToProps = state => {
   return {
@@ -224,12 +226,17 @@ class PatientDetails extends React.Component {
    * @description API implementation when risk change of particular patient
    */
   changeRisk(event) {
+    this.listener = EventRegister.addEventListener('HEALTH_STATUS', (event) => {
+      if (event) {
+        console.log(event);
+      }
+    })
     this.setState({ disableRiskContainer: true });
     const endpoint = `patients/assign-risk/${this.props.id}`;
     const reqObj = {
       risk: event === "high" ? 101 : event === "medium" ? 102 : 103
     };
-
+    WebSocketService.addMessageEventListener();
     return putapi(endpoint, reqObj).then(responseJson => {
       this.setState({ disableRiskContainer: false });
       if (responseJson.responseCode !== "ERROR") {
@@ -246,6 +253,12 @@ class PatientDetails extends React.Component {
       }
     });
   }
+
+  
+  componentWillUnmount() {
+    EventRegister.removeEventListener(this.listener)
+  }
+
 
   /**
    * @method changeQuarantine

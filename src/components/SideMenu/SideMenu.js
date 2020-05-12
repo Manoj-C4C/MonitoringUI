@@ -14,6 +14,7 @@ import {
 } from 'carbon-components-react/lib/components/UIShell';
 import { ReactComponent as Help } from "../../assets/images/help.svg";
 import { Events32, HelpFilled32, Settings32, Menu16, UserAvatar16, ChevronDown16 } from '@carbon/icons-react';
+import WebSocketService from '../../services/webSocket.js';
 
 class SideMenu extends Component {
 
@@ -64,6 +65,7 @@ class SideMenu extends Component {
     logoutClk(event) {
         event.preventDefault();
         localStorage.removeItem('user_details');
+        WebSocketService.closeConnection();
         this.props.history.push('/login');
     }
 

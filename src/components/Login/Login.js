@@ -13,6 +13,7 @@ import health_logo from '../../assets/images/health.svg';
 import { Content } from 'carbon-components-react/lib/components/UIShell';
 import { ArrowRight16, View16, ViewOff16, Information16 } from '@carbon/icons-react';
 import { postapi } from '../../services/webservices';
+import WebSocketService from '../../services/webSocket.js';
 
 class Login extends Component {
 
@@ -72,12 +73,18 @@ class Login extends Component {
           name: responseJson.name, 
           usertype: responseJson.usertype
         });
+
+        if (!WebSocketService.connected) {
+          WebSocketService.connect(userData.id);
+        }
         localStorage.setItem('user_details', userData);
         this.props.history.push('/dashboard');
+      }else{
+        WebSocketService.closeConnection();
       }
     })
   }
-
+  
   /**
    * @method pwdView
    * @description Password view function
